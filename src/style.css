@@ -1,0 +1,49 @@
+/* Global styles */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 20px;
+  background-color: white;
+  color: black;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Table styling */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Table headers (blue) */
+table th {
+  background-color: #c0f0f0; /* blue header */
+  padding: 4px;
+  border: 1px solid #999;
+}
+
+/* Table body cells */
+table td {
+  padding: 4px;
+  border: 1px solid #999;
+}
+
+/* Input fields inside tables (yellow) */
+table input {
+  background-color: #ffff8f; /* yellow input */
+  width: 60px;
+  padding: 2px;
+  text-align: center;
+  box-sizing: border-box;
+  border: 1px solid #999;
+}
+
+
+table#inputTable {
+  width: 600px;   /* adjust as needed, smaller than default */
+  text-align: left; /* keeps parameter names readable */
+}

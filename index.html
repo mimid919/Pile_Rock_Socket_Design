@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Soil Input Tables</title>
+  <!-- Link to external CSS -->
+  <link rel="stylesheet" href="./src/style.css">
+  <script type="module" src="./src/main.js"></script>
+
+</head>
+<body>
+
+<h1>Initial Inputs</h1>
+<table id="inputTable" border="1">
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Value</th>
+      <th>Units</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr>
+      <td>RL of the TOP of borehole</td>
+      <td><input type="number" id="rl_borehole" /></td>
+      <td>m</td>
+    </tr>
+
+    <tr>
+      <td>Approx RL at TOP of pile</td>
+      <td><input type="number" id="rl_pile_top" /></td>
+      <td>m</td>
+    </tr>
+
+    <tr>
+      <td>Excavation or Soil Depth to be ignored</td>
+      <td><input type="number" id="soil_ignore" /></td>
+      <td>m</td>
+    </tr>
+
+    <tr>
+      <td>Ground water table at RL</td>
+      <td><input type="number" id="water_table" /></td>
+      <td>m</td>
+    </tr>
+
+    <tr>
+      <td>Shaft Capacity from soil considered at RL</td>
+      <td id="shaft_rl"></td>
+      <td>m</td>
+    </tr>
+
+    <tr>
+      <td>Pile critical length ratio</td>
+      <td><input type="number" id="critical_ratio" step="0.01" /></td>
+      <td>-</td>
+    </tr>
+
+    <tr>
+      <td>Pile critical length</td>
+      <td id="critical_length"></td>
+      <td>m</td>
+    </tr>
+
+    <tr>
+      <td>Socket length starts at RL (rock)</td>
+      <td><input type="number" id="socket_start" /></td>
+      <td>m</td>
+    </tr>
+
+    <tr>
+      <td>Socket length to be ignored</td>
+      <td><input type="number" id="socket_ignore" /></td>
+      <td>m</td>
+    </tr>
+
+    <tr>
+      <td>Actual socketing starts at RL</td>
+      <td id="actual_socket">0</td>
+      <td>m</td>
+    </tr>
+
+    <tr>
+      <td>Pile diameter</td>
+      <td><input type="number" id="pile_diameter" step="0.01" /></td>
+      <td>mm</td>
+    </tr>
+
+    <tr>
+      <td>Ultimate compression S* (ULS)</td>
+      <td><input type="number" id="uls" /></td>
+      <td>kN</td>
+    </tr>
+
+    <tr>
+      <td>Serviceability compression PSLS (SLS)</td>
+      <td><input type="number" id="sls" /></td>
+      <td>kN</td>
+    </tr>
+
+    <tr>
+      <td>Maximum allowable settlement</td>
+      <td><input type="number" id="settlement" step="0.1" /></td>
+      <td>mm</td>
+    </tr>
+  </tbody>
+</table>
+
+<!--------------------- TABLE 2----------------------->
+<h1>Subsurface Conditions (Soil Only)</h1>
+<table id="soilTable" border="1">
+  <thead>
+    <tr>
+      <th colspan="2">Depth</th>
+      <th rowspan="2">Depth (m)</th>
+      <th rowspan="2">Strata thickness, z (m)</th>
+      <th colspan="2">RL</th>
+      <th rowspan="2">Soil Type</th>
+      <th rowspan="2">ID of Soil Type</th>
+      <th colspan="2">Drained Soil Parameters</th>
+      <th colspan="2">Undrained Soil Parameters</th>
+      <th rowspan="2">γ (kN/m³)</th>
+      <th rowspan="2">σv' at Layer Base (kPa)</th>
+    </tr>
+    <tr>
+      <th>from (m)</th>
+      <th>to (m)</th>
+      <th>from (m)</th>
+      <th>to (m)</th>
+      <th>F</th>
+      <th>φ' (deg)</th>
+      <th>α</th>
+      <th>cu (kPa)</th>
+    </tr>
+  </thead>
+    <tbody>
+      <tr>
+        <td id="soilDepthFrom1">0.0</td>
+        <td><input type="number" id="soilDepthTo1" /></td>
+        <td class="soilDepthTo1_value" ></td>
+        <td class = "soilType1_value"></td>
+      </tr>
+      <tr>
+        <td class="soilDepthTo1_value" ></td>
+        <td><input type="number" id="soilDepthTo2" /></td>
+        <td class="soilDepthTo2_value" ></td>
+        <td id = strataThickness2></td>
+      </tr>
+      <tr>
+        <td class="soilDepthTo2_value" ></td>
+        <td><input type="number" id="soilDepthTo3" /></td>
+        <td class="soilDepthTo3_value" ></td>
+        <td id = strataThickness3></td>
+      </tr>
+      <tr>
+        <td class="soilDepthTo3_value" ></td>
+        <td><input type="number" id="soilDepthTo4" /></td>
+        <td class="soilDepthTo4_value" ></td>
+        <td id = strataThickness4></td>
+      </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
