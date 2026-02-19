@@ -1,18 +1,31 @@
 import { initialInputsTable, soilTable } from './calculations.js';
 import { setMultipleValues } from './tableHandler.js';
 
-// All inputs you want to update to using "_value"
+// All inputs you want to update to using "_value" and add event listeners
 const inputIds = [
   'rl_borehole',
   'rl_pile_top',
   'soil_ignore',
+  'water_table',
+  'socket_ignore',
   'critical_ratio',
   'pile_diameter',
   'socket_start',
+  'uls',
+  'sls',
+  'settlement',
   'soilDepthTo1',
   'soilDepthTo2',
   'soilDepthTo3',
   'soilDepthTo4',
+  'soilType1',
+  'soilType2',
+  'soilType3',
+  'soilType4',
+  'ID1',
+  'ID2',
+  'ID3',
+  'ID4',
 
 ];
 
