@@ -32,7 +32,7 @@ export function initialInputsTable(inputs) {
 //----------------------------------------- SOIL TABLE - STRATA THICKNESS -----------------------------------------------
 export function soilTable(inputs){
   const { soilDepthTo1, soilDepthTo2, soilDepthTo3, soilDepthTo4, rl_borehole, shaft_rl, socket_start,
-    rl_pile_top
+    rl_pile_top, 
     } = inputs;
 
   // All but shaft_rl are inputs
@@ -64,7 +64,8 @@ export function soilTable(inputs){
       soilDepthFrom1 = '0.0';
     }
 
-    const strataThickness2 = round(soilDepthTo2 - soilDepthFrom1);
+    const strataThickness1 = round(soilDepthTo1 - soilDepthFrom1);
+    const strataThickness2 = round(soilDepthTo2 - soilDepthTo1);
     const strataThickness3 = round(soilDepthTo3 - soilDepthTo2);
     const strataThickness4 = round(soilDepthTo4 - soilDepthTo3);
 
@@ -83,6 +84,7 @@ export function soilTable(inputs){
     // Return all outputs 
     return { 
       soilDepthFrom1,
+      strataThickness1,
       strataThickness2, 
       strataThickness3, 
       strataThickness4,
