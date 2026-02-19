@@ -145,6 +145,8 @@
         <td id="soilRLto1" ></td>
         <td><input type="text" id="soilType1" /></td>
         <td><input type="number" id="ID1" /></td>
+        <td id="F1" ></td>
+        <td id="phi1" ></td>
       </tr>
       <tr>
         <td class="soilDepthTo1_value" ></td>
@@ -155,6 +157,8 @@
         <td id="soilRLto2" ></td>
         <td><input type="text" id="soilType2" /></td>
         <td><input type="number" id="ID2" /></td>
+        <td id="F2" ></td>
+        <td id="phi2" ></td>
       </tr>
       <tr>
         <td class="soilDepthTo2_value" ></td>
@@ -165,6 +169,8 @@
         <td id="soilRLto3" ></td>
         <td><input type="text" id="soilType3" /></td>
         <td><input type="number" id="ID3" /></td>
+        <td id="F3" ></td>
+        <td id="phi3" ></td>
       </tr>
       <tr>
         <td class="soilDepthTo3_value" ></td>
@@ -175,10 +181,59 @@
         <td id="soilRLto4" ></td>
         <td><input type="text" id="soilType4" /></td>
         <td><input type="number" id="ID4" /></td>
-
+        <td id="F4" ></td>
+        <td id="phi4" ></td>
       </tr>
   </tbody>
 </table>
+<script>
+  // Global list of soil/rock classes
+  const soilClasses = [
+    "GC-vd","GM-vd","GP-vd","GW-vd","GC-d","GM-d","GP-d","GW-d",
+    "GC-md","GM-md","GP-md","GW-md","GC-l","GM-l","GP-l","GW-l",
+    "GC-vl","GM-vl","GP-vl","GW-vl","SC-vd","SM-vd","SP-vd","SW-vd",
+    "SC-d","SM-d","SP-d","SW-d","SC-md","SM-md","SP-md","SW-md",
+    "SC-l","SM-l","SP-l","SW-l","SC-vl","SM-vl","SP-vl","SW-vl",
+    "ML-h","OL-h","CL-h","ML-vst","OL-vst","CL-vst","ML-st","OL-st","CL-st",
+    "ML-f","OL-f","CL-f","ML-s","OL-s","CL-s","ML-vs","OL-vs","CL-vs",
+    "MH-h","OH-h","CH-h","MH-vst","OH-vst","CH-vst","CH-st","OH-st","MH-st",
+    "MH-f","OH-f","CH-f","MH-s","OH-s","CH-s","MH-vs","OH-vs","CH-vs",
+    "UF-","EF-","Q-1A","Q-1B","Q-1C","Q-1D","Q-2A","Q-2B","Q-2C",
+    "C-1A","C-1B","C-1C","C-1D","C-2A","C-2B","C-2C",
+    "RS-1A","RS-1B","RS-1C","RS-2A","RS-2B","AR-5","AR-4","AR-3","AR-2","AR-1",
+    "FZ/SZ-","1"
+  ];
+
+  // Function to create a reusable select
+  function createSoilSelect(id, defaultValue = "") {
+    const select = document.createElement("select");
+    select.id = id;
+
+    // Empty option
+    const emptyOption = document.createElement("option");
+    emptyOption.value = "";
+    emptyOption.textContent = "--Select--";
+    select.appendChild(emptyOption);
+
+    // Add all soil classes
+    soilClasses.forEach(cls => {
+      const option = document.createElement("option");
+      option.value = cls;
+      option.textContent = cls;
+      if (cls === defaultValue) option.selected = true;
+      select.appendChild(option);
+    });
+
+    return select;
+  }
+
+  // Replace each soilType input with a select
+  for (let i = 1; i <= 4; i++) { // your table has 4 soil rows
+    const td = document.getElementById(`soilType${i}`).parentNode; // get the parent td
+    td.innerHTML = ""; // clear the input
+    td.appendChild(createSoilSelect(`soilType${i}`));
+  }
+</script>
 
 </body>
 </html>
