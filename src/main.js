@@ -27,7 +27,7 @@ function updateValueSpans(inputId) {
 
 
 
-// Main update function — updates _values and runs calculations
+//---------------------------- INITIAL TABLE -----------------------
 function updateInitialTable() {
   inputIds.forEach(updateValueSpans);
 
@@ -46,7 +46,8 @@ function updateInitialTable() {
 
 }
 
-function updateSoilTable() {
+//---------------------------- SOIL TABLE ---------------------------
+async function updateSoilTable() {
   inputIds.forEach(updateValueSpans);
 
 
@@ -66,27 +67,26 @@ function updateSoilTable() {
   };
 
 
-  const derivedsoilTable = soilTable(soilInputs);
+  const derivedsoilTable = await soilTable(soilInputs);
 
-  // 4️⃣ Update DOM or table with derived values
   setMultipleValues({...derivedsoilTable});
 
 }
 
 
 // Attach listeners to all inputs
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   inputIds.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
 
-    el.addEventListener('input', () => {
+    el.addEventListener('input', async () => {
       updateInitialTable();
-      updateSoilTable();
+      await updateSoilTable();
     });
   });
 
   // Initial call to populate _values and derived calculations
   updateInitialTable();
-  updateSoilTable();
+  await updateSoilTable();
 });

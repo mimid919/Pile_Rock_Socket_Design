@@ -32,7 +32,7 @@ export function initialInputsTable(inputs) {
 }
 
 //----------------------------------------- SOIL TABLE - STRATA THICKNESS -----------------------------------------------
-export function soilTable(inputs){
+export async function soilTable(inputs){
   const { soilDepthTo1, soilDepthTo2, soilDepthTo3, soilDepthTo4, rl_borehole, shaft_rl, socket_start,
     rl_pile_top, soilType1, soilType2, soilType3, soilType4
     } = inputs;
@@ -67,6 +67,7 @@ export function soilTable(inputs){
     } else {
       soilDepthFrom1 = '0.0';
     }
+    console.log('entered soilTable calc');
 
     const strataThickness1 = round(soilDepthTo1 - soilDepthFrom1);
     const strataThickness2 = round(soilDepthTo2 - soilDepthTo1);
@@ -84,15 +85,15 @@ export function soilTable(inputs){
     const soilRLto4 = round(rl_pile_top - soilDepthTo4);
 
     //------------ Drained Soil Parameters section ----------------//
-    const F1 = round(lookup(soilType1, 23));
-    const F2 = round(lookup(soilType2, 23));
-    const F3 = round(lookup(soilType3, 23));
-    const F4 = round(lookup(soilType4, 23));
+    const F1 = round(await lookup(soilType1, 23));
+    const F2 = round(await lookup(soilType2, 23));
+    const F3 = round(await lookup(soilType3, 23));
+    const F4 = round(await lookup(soilType4, 23));
 
-    const phi1 = round(lookup(soilType1, 8));
-    const phi2 = round(lookup(soilType2, 8));
-    const phi3 = round(lookup(soilType3, 8));
-    const phi4 = round(lookup(soilType4, 8));
+    const phi1 = round(await lookup(soilType1, 8));
+    const phi2 = round(await lookup(soilType2, 8));
+    const phi3 = round(await lookup(soilType3, 8));
+    const phi4 = round(await lookup(soilType4, 8));
 
     // Return all outputs 
     return { 
