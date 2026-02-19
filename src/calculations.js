@@ -95,6 +95,25 @@ export async function soilTable(inputs){
     const phi3 = round(await lookup(soilType3, 8));
     const phi4 = round(await lookup(soilType4, 8));
 
+    //------------ Unrained Soil Parameters section ----------------//
+    const alpha1 = round(await lookup(soilType1, 24));
+    const alpha2 = round(await lookup(soilType2, 24));
+    const alpha3 = round(await lookup(soilType3, 24));
+    const alpha4 = round(await lookup(soilType4, 24));
+
+    const cu1 = round(await lookup(soilType1, 4));
+    const cu2 = round(await lookup(soilType2, 4));
+    const cu3 = round(await lookup(soilType3, 4));
+    const cu4 = round(await lookup(soilType4, 4));
+
+    //------------ Gamma section ----------------//
+    const gamma1 = round(await lookup(soilType1, 3));
+    const gamma2 = round(await lookup(soilType2, 3));
+    const gamma3 = round(await lookup(soilType3, 3));
+    const gamma4 = round(await lookup(soilType4, 3));
+
+    //------------ Unrained Soil Parameters section ----------------//
+
     // Return all outputs 
     return { 
       soilDepthFrom1,
@@ -117,7 +136,19 @@ export async function soilTable(inputs){
       phi1,
       phi2,
       phi3,
-      phi4
+      phi4,
+      alpha1,
+      alpha2,
+      alpha3,
+      alpha4,
+      cu1,
+      cu2,
+      cu3,
+      cu4,
+      gamma1,
+      gamma2,
+      gamma3,
+      gamma4,
     };
     
 }
