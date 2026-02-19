@@ -8,22 +8,16 @@ const round = (num, dp = 2) =>
 function calculateLayerBase(water_table, RLto, RLfrom, gamma, strataThickness, LayerBasePrevious) {
 
   if (water_table < RLto) {
-      console.log('step 1 passed');
     return LayerBasePrevious +(gamma * strataThickness);
   }
 
   if (RLfrom < water_table) {
-      console.log('step 2 passed');
     return LayerBasePrevious + ((gamma - 10) * strataThickness);
   }
-    console.log('step 3 passed');
-
 
   return LayerBasePrevious + (gamma * strataThickness) - (10 * (water_table - RLto));
 
 }
-
-
 
 //----------------------------------------- INITIAL TABLE -----------------------------------------------
 export function initialInputsTable(inputs) {
@@ -53,37 +47,24 @@ export function initialInputsTable(inputs) {
 
 //----------------------------------------- SOIL TABLE - STRATA THICKNESS -----------------------------------------------
 export async function soilTable(inputs){
+  console.log('soilTable() entered');
   const { soilDepthTo1, soilDepthTo2, soilDepthTo3, soilDepthTo4, soilDepthTo5, soilDepthTo6, rl_borehole, shaft_rl, socket_start,
     rl_pile_top, soilType1, soilType2, soilType3, soilType4, soilType5, soilType6, water_table
     } = inputs;
 
   // All but shaft_rl are inputs
   if (!soilDepthTo1 || !soilDepthTo2 || !soilDepthTo3 || !soilDepthTo4 || !soilDepthTo5 || !soilDepthTo6 
-        || !rl_borehole || !rl_pile_top || !socket_start
-        || !soilType1 || !soilType2 || !soilType3 || !soilType4 || !soilType5 || !soilType6
-     ) { 
-        return {
-          soilDepthFrom1: '',           
-          strataThickness2: '',          
-          strataThickness3: '',
-          strataThickness4: '',
-          strataThickness5: '',
-          strataThickness6: '',
-          soilRLfrom1: '',
-          soilRLto1: '',
-          soilRLfrom2: '',
-          soilRLto2: '',
-          soilRLfrom3: '',
-          soilRLto3: '',
-          soilRLfrom4: '',
-          soilRLto4: '',
-          soilRLfrom5: '',
-          soilRLto5: '',
-          soilRLfrom6: '',
-          soilRLto6: '',
-        };
-      }
-
+      || !rl_borehole || !rl_pile_top || !socket_start
+      || !soilType1 || !soilType2 || !soilType3 || !soilType4 || !soilType5 || !soilType6
+  ) { 
+      const emptyResult = { soilDepthFrom1: '' };
+      ['strataThickness','soilRLfrom','soilRLto','F','phi','alpha','cu','gamma','layerBase'].forEach(key => {
+          for(let i=1; i<=6; i++){
+              emptyResult[`${key}${i}`] = '';
+          }
+      });
+      return emptyResult;
+  }
   //------------ STRATA THICKNESS section ----------------//
 
     // Different section, special case for depth from 1, as it is calculated from initial inputs table
@@ -94,132 +75,120 @@ export async function soilTable(inputs){
     } else {
       soilDepthFrom1 = '0.0';
     }
-    console.log('entered soilTable calc');
 
-    const strataThickness1 = round(soilDepthTo1 - soilDepthFrom1);
-    const strataThickness2 = round(soilDepthTo2 - soilDepthTo1);
-    const strataThickness3 = round(soilDepthTo3 - soilDepthTo2);
-    const strataThickness4 = round(soilDepthTo4 - soilDepthTo3);
-    const strataThickness5 = round(soilDepthTo5 - soilDepthTo4);
-    const strataThickness6 = round(soilDepthTo6 - soilDepthTo5);
-    //------------ RL section ----------------//
-    const soilRLfrom1 = round(rl_pile_top - soilDepthFrom1);
-    const soilRLto1 = round(rl_pile_top - soilDepthTo1);
-    const soilRLfrom2 = round(rl_pile_top - soilDepthTo1);
-    const soilRLto2 = round(rl_pile_top - soilDepthTo2);
-    const soilRLfrom3 = round(rl_pile_top - soilDepthTo2);
-    const soilRLto3 = round(rl_pile_top - soilDepthTo3);
-    const soilRLfrom4 = round(rl_pile_top - soilDepthTo3);
-    const soilRLto4 = round(rl_pile_top - soilDepthTo4);
-    const soilRLfrom5 = round(rl_pile_top - soilDepthTo4);
-    const soilRLto5 = round(rl_pile_top - soilDepthTo5);
-    const soilRLfrom6 = round(rl_pile_top - soilDepthTo5);
-    const soilRLto6 = round(rl_pile_top - soilDepthTo6);
+    //Automatation loop
+    const soilDepthTos = [soilDepthTo1, soilDepthTo2, soilDepthTo3, soilDepthTo4, soilDepthTo5, soilDepthTo6];
+    const soilTypes = [soilType1, soilType2, soilType3, soilType4, soilType5, soilType6];
 
-    //------------ Drained Soil Parameters section ----------------//
-    const F1 = round(await lookup(soilType1, 23));
-    const F2 = round(await lookup(soilType2, 23));
-    const F3 = round(await lookup(soilType3, 23));
-    const F4 = round(await lookup(soilType4, 23));
-    const F5 = round(await lookup(soilType5, 23));
-    const F6 = round(await lookup(soilType6, 23));
+    const strataThickness = [];
+    const soilRLfrom = [];
+    const soilRLto = [];
+    const F = [];
+    const phi = [];
+    const alpha = [];
+    const cu = [];
+    const gamma = [];
+    const layerBase = [];
 
-    const phi1 = round(await lookup(soilType1, 8));
-    const phi2 = round(await lookup(soilType2, 8));
-    const phi3 = round(await lookup(soilType3, 8));
-    const phi4 = round(await lookup(soilType4, 8));
-    const phi5 = round(await lookup(soilType5, 8));
-    const phi6 = round(await lookup(soilType6, 8));
+    for (let i = 0; i < soilDepthTos.length; i++) {
+      // Strata thickness
+      strataThickness[i] = round(i === 0 ? soilDepthTos[i] - soilDepthFrom1 : soilDepthTos[i] - soilDepthTos[i-1]);
 
-    //------------ Unrained Soil Parameters section ----------------//
-    const alpha1 = round(await lookup(soilType1, 24));
-    const alpha2 = round(await lookup(soilType2, 24));
-    const alpha3 = round(await lookup(soilType3, 24));
-    const alpha4 = round(await lookup(soilType4, 24));
-    const alpha5 = round(await lookup(soilType5, 24));
-    const alpha6 = round(await lookup(soilType6, 24));
+      // RL from/to
+      soilRLfrom[i] = round(i === 0 ? rl_pile_top - soilDepthFrom1 : rl_pile_top - soilDepthTos[i-1]);
+      soilRLto[i] = round(rl_pile_top - soilDepthTos[i]);
 
-    const cu1 = round(await lookup(soilType1, 4));
-    const cu2 = round(await lookup(soilType2, 4));
-    const cu3 = round(await lookup(soilType3, 4));
-    const cu4 = round(await lookup(soilType4, 4));
-    const cu5 = round(await lookup(soilType5, 4));
-    const cu6 = round(await lookup(soilType6, 4));
+      // Drained soil parameters
+      F[i] = round(await lookup(soilTypes[i], 23));
+      phi[i] = round(await lookup(soilTypes[i], 8));
 
-    //------------ Gamma section ----------------//
-    const gamma1 = round(await lookup(soilType1, 3));
-    const gamma2 = round(await lookup(soilType2, 3));
-    const gamma3 = round(await lookup(soilType3, 3));
-    const gamma4 = round(await lookup(soilType4, 3));
-    const gamma5 = round(await lookup(soilType5, 3));
-    const gamma6 = round(await lookup(soilType6, 3));
+      // Unrained soil parameters
+      alpha[i] = round(await lookup(soilTypes[i], 24));
+      cu[i] = round(await lookup(soilTypes[i], 4));
 
-    //------------ Layer base section ----------------//
-    const layerBase1 = round(calculateLayerBase(water_table, soilRLto1, soilRLfrom1, gamma1, strataThickness1, 0));
-    const layerBase2 = round(calculateLayerBase(water_table, soilRLto2, soilRLfrom2, gamma2, strataThickness2, layerBase1));
-    const layerBase3 = round(calculateLayerBase(water_table, soilRLto3, soilRLfrom3, gamma3, strataThickness3, layerBase2));
-    const layerBase4 = round(calculateLayerBase(water_table, soilRLto4, soilRLfrom4, gamma4, strataThickness4, layerBase3));
-    const layerBase5 = round(calculateLayerBase(water_table, soilRLto5, soilRLfrom5, gamma5, strataThickness5, layerBase4));
-    const layerBase6 = round(calculateLayerBase(water_table, soilRLto6, soilRLfrom6, gamma6, strataThickness6, layerBase5));
+      // Gamma
+      gamma[i] = round(await lookup(soilTypes[i], 3));
 
+      // Layer base
+      layerBase[i] = round(
+        calculateLayerBase(
+          water_table,
+          soilRLto[i],
+          soilRLfrom[i],
+          gamma[i],
+          strataThickness[i],
+          i === 0 ? 0 : layerBase[i-1]
+        )
+      );
+    }    
     // Return all outputs 
-    return { 
+    console.log('soilTable() completed calculations');
+    return {
       soilDepthFrom1,
-      strataThickness1,
-      strataThickness2, 
-      strataThickness3, 
-      strataThickness4,
-      strataThickness5,
-      strataThickness6,
-      soilRLfrom1,
-      soilRLto1,
-      soilRLfrom2,
-      soilRLto2,
-      soilRLfrom3,
-      soilRLto3,
-      soilRLfrom4,
-      soilRLto4,
-      soilRLfrom5,
-      soilRLto5,
-      soilRLfrom6,
-      soilRLto6,
-      F1,
-      F2,
-      F3,
-      F4,
-      F5,
-      F6,
-      phi1,
-      phi2,
-      phi3,
-      phi4,
-      phi5,
-      phi6,
-      alpha1,
-      alpha2,
-      alpha3,
-      alpha4,
-      alpha5,
-      alpha6,
-      cu1,
-      cu2,
-      cu3,
-      cu4,
-      cu5,
-      cu6,
-      gamma1,
-      gamma2,
-      gamma3,
-      gamma4,
-      gamma5,
-      gamma6,
-      layerBase1,
-      layerBase2,
-      layerBase3,
-      layerBase4,
-      layerBase5,
-      layerBase6,
+      strataThickness1: strataThickness[0],
+      strataThickness2: strataThickness[1],
+      strataThickness3: strataThickness[2],
+      strataThickness4: strataThickness[3],
+      strataThickness5: strataThickness[4],
+      strataThickness6: strataThickness[5],
+
+      soilRLfrom1: soilRLfrom[0],
+      soilRLfrom2: soilRLfrom[1],
+      soilRLfrom3: soilRLfrom[2],
+      soilRLfrom4: soilRLfrom[3],
+      soilRLfrom5: soilRLfrom[4],
+      soilRLfrom6: soilRLfrom[5],
+
+      soilRLto1: soilRLto[0],
+      soilRLto2: soilRLto[1],
+      soilRLto3: soilRLto[2],
+      soilRLto4: soilRLto[3],
+      soilRLto5: soilRLto[4],
+      soilRLto6: soilRLto[5],
+
+      F1: F[0],
+      F2: F[1],
+      F3: F[2],
+      F4: F[3],
+      F5: F[4],
+      F6: F[5],
+
+      phi1: phi[0],
+      phi2: phi[1],
+      phi3: phi[2],
+      phi4: phi[3],
+      phi5: phi[4],
+      phi6: phi[5],
+
+      alpha1: alpha[0],
+      alpha2: alpha[1],
+      alpha3: alpha[2],
+      alpha4: alpha[3],
+      alpha5: alpha[4],
+      alpha6: alpha[5],
+
+      cu1: cu[0],
+      cu2: cu[1],
+      cu3: cu[2],
+      cu4: cu[3],
+      cu5: cu[4],
+      cu6: cu[5],
+
+      gamma1: gamma[0],
+      gamma2: gamma[1],
+      gamma3: gamma[2],
+      gamma4: gamma[3],
+      gamma5: gamma[4],
+      gamma6: gamma[5],
+
+      layerBase1: layerBase[0],
+      layerBase2: layerBase[1],
+      layerBase3: layerBase[2],
+      layerBase4: layerBase[3],
+      layerBase5: layerBase[4],
+      layerBase6: layerBase[5],
     };
+
     
 }
 
