@@ -1,3 +1,5 @@
+import  { lookup }from'./Parameters.js';
+
 //helper function 
 const round = (num, dp = 2) =>
   Math.round(num * 10**dp) / 10**dp;
@@ -32,11 +34,13 @@ export function initialInputsTable(inputs) {
 //----------------------------------------- SOIL TABLE - STRATA THICKNESS -----------------------------------------------
 export function soilTable(inputs){
   const { soilDepthTo1, soilDepthTo2, soilDepthTo3, soilDepthTo4, rl_borehole, shaft_rl, socket_start,
-    rl_pile_top, 
+    rl_pile_top, soilType1, soilType2, soilType3, soilType4
     } = inputs;
 
   // All but shaft_rl are inputs
-  if (!soilDepthTo1 || !soilDepthTo2 || !soilDepthTo3 || !soilDepthTo4 || !rl_borehole || !rl_pile_top || !socket_start) { 
+  if (!soilDepthTo1 || !soilDepthTo2 || !soilDepthTo3 || !soilDepthTo4 || !rl_borehole || !rl_pile_top || !socket_start
+     || !soilType1 || !soilType2 || !soilType3 || !soilType4
+  ) { 
     return {
       soilDepthFrom1: '',           
       strataThickness2: '',          
@@ -79,7 +83,16 @@ export function soilTable(inputs){
     const soilRLfrom4 = round(rl_pile_top - soilDepthTo3);
     const soilRLto4 = round(rl_pile_top - soilDepthTo4);
 
+    //------------ Drained Soil Parameters section ----------------//
+    const F1 = round(lookup(soilType1, 23));
+    const F2 = round(lookup(soilType2, 23));
+    const F3 = round(lookup(soilType3, 23));
+    const F4 = round(lookup(soilType4, 23));
 
+    const phi1 = round(lookup(soilType1, 8));
+    const phi2 = round(lookup(soilType2, 8));
+    const phi3 = round(lookup(soilType3, 8));
+    const phi4 = round(lookup(soilType4, 8));
 
     // Return all outputs 
     return { 
@@ -95,7 +108,15 @@ export function soilTable(inputs){
       soilRLfrom3,
       soilRLto3,
       soilRLfrom4,
-      soilRLto4
+      soilRLto4,
+      F1,
+      F2,
+      F3,
+      F4,
+      phi1,
+      phi2,
+      phi3,
+      phi4
     };
     
 }

@@ -1,4 +1,4 @@
-import  { lookup }from'./Parameters.js';
+import  { lookup }from'./src/Parameters.js';
 
 // Test cases for soil table drained soil parameters F
 let searchValue = "UF-";

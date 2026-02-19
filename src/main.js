@@ -1,7 +1,7 @@
 import { initialInputsTable, soilTable } from './calculations.js';
 import { setMultipleValues } from './tableHandler.js';
 
-// All inputs you want to watch
+// All inputs you want to update to using "_value"
 const inputIds = [
   'rl_borehole',
   'rl_pile_top',
@@ -12,7 +12,8 @@ const inputIds = [
   'soilDepthTo1',
   'soilDepthTo2',
   'soilDepthTo3',
-  'soilDepthTo4'
+  'soilDepthTo4',
+
 ];
 
 // Generic function to update _value spans for any input
@@ -58,6 +59,10 @@ function updateSoilTable() {
     shaft_rl: Number(document.getElementById('shaft_rl')?.textContent) || 0,
     socket_start: Number(document.getElementById('socket_start')?.value) || 0,
     rl_pile_top: Number(document.getElementById('rl_pile_top')?.value) || 0,
+    soilType1: document.getElementById('soilType1')?.value || '',
+    soilType2: document.getElementById('soilType2')?.value || '',
+    soilType3: document.getElementById('soilType3')?.value || '',
+    soilType4: document.getElementById('soilType4')?.value || '',
   };
 
 
