@@ -1,13 +1,15 @@
 
 //----------------------------------------- INITIAL TABLE -----------------------------------------------
 export function initialInputsTable(inputs) {
-  const { rl_pile_top, soil_ignore, critical_ratio, pile_diameter, socket_start } = inputs;
+  const { rl_pile_top, soil_ignore, critical_ratio, pile_diameter, socket_start, } = inputs;
+
 
   if (!areInputsFilled(inputs)) {
     return {
       shaft_rl: '',           // empty string instead of null
       critical_length: '',
-      actual_socket: ''
+      actual_socket: '',
+      
     };
   }
 
@@ -25,21 +27,31 @@ export function initialInputsTable(inputs) {
 
 //----------------------------------------- SOIL TABLE - STRATA THICKNESS -----------------------------------------------
 export function soilStrataThickness(inputs){
-    const { soilDepthTo1, soilDepthTo2, soilDepthTo3, soilDepthTo4,  } = inputs;
+    const { soilDepthTo1, soilDepthTo2, soilDepthTo3, soilDepthTo4, rl_borehole, shaft_rl, socket_start } = inputs;
 
   if (!areInputsFilled(inputs)) {
     return {
-      strataThickness2: '',           // empty string instead of null
+      soilDepthFrom1: '',           
+      strataThickness2: '',          
       strataThickness3: '',
-      strataThickness4: ''
+      strataThickness4: '',
     };
   }
+
+    // Different section, special case for depth from 1, as it is calculated from initial inputs table
+    let soilDepthFrom1 ;
+    if (shaft_rl > socket_start){
+      soilDepthFrom1 = rl_borehole - shaft_rl;
+    } else {
+      soilDepthFrom1 = '0.0';
+      console.log('Shaft RL is not greater than socket start, cannot calculate soil depth from 1');
+    }
 
     const strataThickness2 = soilDepthTo2 - soilDepthTo1;
     const strataThickness3 = soilDepthTo3 - soilDepthTo2;
     const strataThickness4 = soilDepthTo4 - soilDepthTo3;
 
-    return { strataThickness2, strataThickness3, strataThickness4 };
+    return { soilDepthFrom1,strataThickness2, strataThickness3, strataThickness4 };
     
 }
 
