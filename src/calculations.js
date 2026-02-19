@@ -54,7 +54,7 @@ export function initialInputsTable(inputs) {
 //----------------------------------------- SOIL TABLE - STRATA THICKNESS -----------------------------------------------
 export async function soilTable(inputs){
   const { soilDepthTo1, soilDepthTo2, soilDepthTo3, soilDepthTo4, soilDepthTo5, soilDepthTo6, rl_borehole, shaft_rl, socket_start,
-    rl_pile_top, soilType1, soilType2, soilType3, soilType4, water_table
+    rl_pile_top, soilType1, soilType2, soilType3, soilType4, soilType5, soilType6, water_table
     } = inputs;
 
   // All but shaft_rl are inputs
