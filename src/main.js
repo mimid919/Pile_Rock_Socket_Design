@@ -98,6 +98,30 @@ async function updateSoilTable() {
 
 }
 
+function updateSoilTableRows() {
+  const rowAmount = Number(document.getElementById('rowAmount').value);
+  const table = document.getElementById('soilTable');
+  const rows = table.querySelectorAll('tbody tr');
+
+  rows.forEach((row, index) => {
+    if (index < rowAmount) {
+      row.style.display = ''; // show
+    } else {
+      row.style.display = 'none'; // hide
+    }
+  });
+}
+// Call whenever rowAmount changes
+document.getElementById('rowAmount').addEventListener('change', () => {
+  updateSoilTableRows();
+  updateSoilTable(); // optional: recalc only for visible layers
+});
+
+
+updateSoilTableRows(); // Initial call to set correct rows on page load
+
+
+
 
 // Attach listeners to all inputs
 document.addEventListener('DOMContentLoaded', async () => {

@@ -111,7 +111,15 @@
 
 <!--------------------- TABLE 2----------------------->
 <h1>Subsurface Conditions (Soil Only)</h1>
-<input type = "number" id = "rowAmount" placeholder="Number of Rows" min="1" max="6" />
+<label for="rowAmount">Number of Rows:</label>
+<select id="rowAmount">
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4" selected>4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+</select>
 <table id="soilTable" border="1">
   <thead>
     <tr>
