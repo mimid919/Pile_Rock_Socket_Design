@@ -4,6 +4,26 @@ import  { lookup }from'./Parameters.js';
 const round = (num, dp = 2) =>
   Math.round(num * 10**dp) / 10**dp;
 
+//Layer base calculation
+function calculateLayerBase(water_table, RLto, RLfrom, gamma, strataThickness, LayerBasePrevious) {
+
+  if (water_table < RLto) {
+      console.log('step 1 passed');
+    return LayerBasePrevious +(gamma * strataThickness);
+  }
+
+  if (RLfrom < water_table) {
+      console.log('step 2 passed');
+    return LayerBasePrevious + ((gamma - 10) * strataThickness);
+  }
+    console.log('step 3 passed');
+
+
+  return LayerBasePrevious + (gamma * strataThickness) - (10 * (water_table - RLto));
+
+}
+
+
 
 //----------------------------------------- INITIAL TABLE -----------------------------------------------
 export function initialInputsTable(inputs) {
@@ -34,7 +54,7 @@ export function initialInputsTable(inputs) {
 //----------------------------------------- SOIL TABLE - STRATA THICKNESS -----------------------------------------------
 export async function soilTable(inputs){
   const { soilDepthTo1, soilDepthTo2, soilDepthTo3, soilDepthTo4, rl_borehole, shaft_rl, socket_start,
-    rl_pile_top, soilType1, soilType2, soilType3, soilType4
+    rl_pile_top, soilType1, soilType2, soilType3, soilType4, water_table
     } = inputs;
 
   // All but shaft_rl are inputs
@@ -112,7 +132,11 @@ export async function soilTable(inputs){
     const gamma3 = round(await lookup(soilType3, 3));
     const gamma4 = round(await lookup(soilType4, 3));
 
-    //------------ Unrained Soil Parameters section ----------------//
+    //------------ Layer base section ----------------//
+    const layerBase1 = round(calculateLayerBase(water_table, soilRLto1, soilRLfrom1, gamma1, strataThickness1, 0));
+    const layerBase2 = round(calculateLayerBase(water_table, soilRLto2, soilRLfrom2, gamma2, strataThickness2, layerBase1));
+    const layerBase3 = round(calculateLayerBase(water_table, soilRLto3, soilRLfrom3, gamma3, strataThickness3, layerBase2));
+    const layerBase4 = round(calculateLayerBase(water_table, soilRLto4, soilRLfrom4, gamma4, strataThickness4, layerBase3));
 
     // Return all outputs 
     return { 
@@ -149,6 +173,10 @@ export async function soilTable(inputs){
       gamma2,
       gamma3,
       gamma4,
+      layerBase1,
+      layerBase2,
+      layerBase3,
+      layerBase4,
     };
     
 }

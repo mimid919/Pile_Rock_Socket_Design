@@ -77,6 +77,7 @@ async function updateSoilTable() {
     soilType2: document.getElementById('soilType2')?.value || '',
     soilType3: document.getElementById('soilType3')?.value || '',
     soilType4: document.getElementById('soilType4')?.value || '',
+    water_table: Number(document.getElementById('water_table')?.value) || 0,
   };
 
 
