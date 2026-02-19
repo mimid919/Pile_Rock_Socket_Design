@@ -47,3 +47,7 @@ table#inputTable {
   width: 600px;   /* adjust as needed, smaller than default */
   text-align: left; /* keeps parameter names readable */
 }
+
+input[type="number"] {
+  width: 100px; /* wider for better readability */
+}

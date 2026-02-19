@@ -46,150 +46,87 @@ export function initialInputsTable(inputs) {
 }
 
 //----------------------------------------- SOIL TABLE - STRATA THICKNESS -----------------------------------------------
-export async function soilTable(inputs){
+export async function soilTable(inputs, numLayers = 6) {
   console.log('soilTable() entered');
-  const { soilDepthTo1, soilDepthTo2, soilDepthTo3, soilDepthTo4, soilDepthTo5, soilDepthTo6, rl_borehole, shaft_rl, socket_start,
-    rl_pile_top, soilType1, soilType2, soilType3, soilType4, soilType5, soilType6, water_table
-    } = inputs;
 
-  // All but shaft_rl are inputs
-  if (!soilDepthTo1 || !soilDepthTo2 || !soilDepthTo3 || !soilDepthTo4 || !soilDepthTo5 || !soilDepthTo6 
-      || !rl_borehole || !rl_pile_top || !socket_start
-      || !soilType1 || !soilType2 || !soilType3 || !soilType4 || !soilType5 || !soilType6
-  ) { 
-      const emptyResult = { soilDepthFrom1: '' };
-      ['strataThickness','soilRLfrom','soilRLto','F','phi','alpha','cu','gamma','layerBase'].forEach(key => {
-          for(let i=1; i<=6; i++){
-              emptyResult[`${key}${i}`] = '';
-          }
-      });
-      return emptyResult;
+  const { rl_borehole, shaft_rl, socket_start, rl_pile_top, water_table } = inputs;
+
+  // Collect soil depths and types dynamically
+  const soilDepthTos = [];
+  const soilTypes = [];
+  for (let i = 1; i <= numLayers; i++) {
+    soilDepthTos.push(Number(inputs[`soilDepthTo${i}`]) || 0);
+    soilTypes.push(inputs[`soilType${i}`] || '');
   }
-  //------------ STRATA THICKNESS section ----------------//
 
-    // Different section, special case for depth from 1, as it is calculated from initial inputs table
-    let soilDepthFrom1 ;
-    if (shaft_rl > socket_start){
-      soilDepthFrom1 = rl_borehole - shaft_rl;
-      // console.log('returning l5- L9');
-    } else {
-      soilDepthFrom1 = '0.0';
+  // Check required inputs for active layers
+  const requiredInputsFilled = soilDepthTos.slice(0, numLayers).every(d => d) &&
+                               soilTypes.slice(0, numLayers).every(t => t) &&
+                               rl_borehole && rl_pile_top && socket_start;
+
+  if (!requiredInputsFilled) {
+    const emptyResult = { soilDepthFrom1: '' };
+    const keys = ['strataThickness','soilRLfrom','soilRLto','F','phi','alpha','cu','gamma','layerBase'];
+    keys.forEach(key => {
+      for (let i = 1; i <= numLayers; i++) {
+        emptyResult[`${key}${i}`] = '';
+      }
+    });
+    return emptyResult;
+  }
+
+  // Calculate soilDepthFrom1
+  let soilDepthFrom1 = shaft_rl > socket_start ? rl_borehole - shaft_rl : 0;
+
+  // Arrays to store results
+  const strataThickness = [];
+  const soilRLfrom = [];
+  const soilRLto = [];
+  const F = [];
+  const phi = [];
+  const alpha = [];
+  const cu = [];
+  const gamma = [];
+  const layerBase = [];
+
+  for (let i = 0; i < numLayers; i++) {
+    // Strata thickness
+    strataThickness[i] = round(i === 0 ? soilDepthTos[i] - soilDepthFrom1 : soilDepthTos[i] - soilDepthTos[i-1]);
+
+    // RL from/to
+    soilRLfrom[i] = round(i === 0 ? rl_pile_top - soilDepthFrom1 : rl_pile_top - soilDepthTos[i-1]);
+    soilRLto[i] = round(rl_pile_top - soilDepthTos[i]);
+
+    // Lookup soil properties
+    F[i] = round(await lookup(soilTypes[i], 23));
+    phi[i] = round(await lookup(soilTypes[i], 8));
+    alpha[i] = round(await lookup(soilTypes[i], 24));
+    cu[i] = round(await lookup(soilTypes[i], 4));
+    gamma[i] = round(await lookup(soilTypes[i], 3));
+
+    // Layer base
+    layerBase[i] = round(
+      calculateLayerBase(
+        water_table,
+        soilRLto[i],
+        soilRLfrom[i],
+        gamma[i],
+        strataThickness[i],
+        i === 0 ? 0 : layerBase[i-1]
+      )
+    );
+  }
+
+  // Convert arrays to object with numbered keys for backward compatibility
+  const result = { soilDepthFrom1 };
+  const keys = {strataThickness, soilRLfrom, soilRLto, F, phi, alpha, cu, gamma, layerBase};
+  Object.entries(keys).forEach(([key, arr]) => {
+    for (let i = 0; i < numLayers; i++) {
+      result[`${key}${i+1}`] = arr[i];
     }
+  });
 
-    //Automatation loop
-    const soilDepthTos = [soilDepthTo1, soilDepthTo2, soilDepthTo3, soilDepthTo4, soilDepthTo5, soilDepthTo6];
-    const soilTypes = [soilType1, soilType2, soilType3, soilType4, soilType5, soilType6];
-
-    const strataThickness = [];
-    const soilRLfrom = [];
-    const soilRLto = [];
-    const F = [];
-    const phi = [];
-    const alpha = [];
-    const cu = [];
-    const gamma = [];
-    const layerBase = [];
-
-    for (let i = 0; i < soilDepthTos.length; i++) {
-      // Strata thickness
-      strataThickness[i] = round(i === 0 ? soilDepthTos[i] - soilDepthFrom1 : soilDepthTos[i] - soilDepthTos[i-1]);
-
-      // RL from/to
-      soilRLfrom[i] = round(i === 0 ? rl_pile_top - soilDepthFrom1 : rl_pile_top - soilDepthTos[i-1]);
-      soilRLto[i] = round(rl_pile_top - soilDepthTos[i]);
-
-      // Drained soil parameters
-      F[i] = round(await lookup(soilTypes[i], 23));
-      phi[i] = round(await lookup(soilTypes[i], 8));
-
-      // Unrained soil parameters
-      alpha[i] = round(await lookup(soilTypes[i], 24));
-      cu[i] = round(await lookup(soilTypes[i], 4));
-
-      // Gamma
-      gamma[i] = round(await lookup(soilTypes[i], 3));
-
-      // Layer base
-      layerBase[i] = round(
-        calculateLayerBase(
-          water_table,
-          soilRLto[i],
-          soilRLfrom[i],
-          gamma[i],
-          strataThickness[i],
-          i === 0 ? 0 : layerBase[i-1]
-        )
-      );
-    }    
-    // Return all outputs 
-    console.log('soilTable() completed calculations');
-    return {
-      soilDepthFrom1,
-      strataThickness1: strataThickness[0],
-      strataThickness2: strataThickness[1],
-      strataThickness3: strataThickness[2],
-      strataThickness4: strataThickness[3],
-      strataThickness5: strataThickness[4],
-      strataThickness6: strataThickness[5],
-
-      soilRLfrom1: soilRLfrom[0],
-      soilRLfrom2: soilRLfrom[1],
-      soilRLfrom3: soilRLfrom[2],
-      soilRLfrom4: soilRLfrom[3],
-      soilRLfrom5: soilRLfrom[4],
-      soilRLfrom6: soilRLfrom[5],
-
-      soilRLto1: soilRLto[0],
-      soilRLto2: soilRLto[1],
-      soilRLto3: soilRLto[2],
-      soilRLto4: soilRLto[3],
-      soilRLto5: soilRLto[4],
-      soilRLto6: soilRLto[5],
-
-      F1: F[0],
-      F2: F[1],
-      F3: F[2],
-      F4: F[3],
-      F5: F[4],
-      F6: F[5],
-
-      phi1: phi[0],
-      phi2: phi[1],
-      phi3: phi[2],
-      phi4: phi[3],
-      phi5: phi[4],
-      phi6: phi[5],
-
-      alpha1: alpha[0],
-      alpha2: alpha[1],
-      alpha3: alpha[2],
-      alpha4: alpha[3],
-      alpha5: alpha[4],
-      alpha6: alpha[5],
-
-      cu1: cu[0],
-      cu2: cu[1],
-      cu3: cu[2],
-      cu4: cu[3],
-      cu5: cu[4],
-      cu6: cu[5],
-
-      gamma1: gamma[0],
-      gamma2: gamma[1],
-      gamma3: gamma[2],
-      gamma4: gamma[3],
-      gamma5: gamma[4],
-      gamma6: gamma[5],
-
-      layerBase1: layerBase[0],
-      layerBase2: layerBase[1],
-      layerBase3: layerBase[2],
-      layerBase4: layerBase[3],
-      layerBase5: layerBase[4],
-      layerBase6: layerBase[5],
-    };
-
-    
+  return result;
 }
 
 

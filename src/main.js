@@ -89,8 +89,10 @@ async function updateSoilTable() {
     water_table: Number(document.getElementById('water_table')?.value) || 0,
   };
 
+  const rowAmount = Number(document.getElementById('rowAmount')?.value) || 0;
 
-  const derivedsoilTable = await soilTable(soilInputs);
+
+  const derivedsoilTable = await soilTable(soilInputs, rowAmount  );
 
   setMultipleValues({...derivedsoilTable});
 
