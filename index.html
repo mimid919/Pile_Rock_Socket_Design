@@ -201,6 +201,38 @@
         <td id="gamma4" ></td>
         <td id = "layerBase4"></td>
       </tr>
+      <tr>
+        <td class="soilDepthTo4_value" ></td>
+        <td><input type="number" id="soilDepthTo5" /></td>
+        <td class="soilDepthTo5_value" ></td>
+        <td id = "strataThickness5"></td>
+        <td id="soilRLfrom5" ></td>
+        <td id="soilRLto5" ></td>
+        <td><input type="text" id="soilType5" /></td>
+        <td><input type="number" id="ID5" /></td>
+        <td id="F5" ></td>
+        <td id="phi5" ></td>
+        <td id="alpha5" ></td>
+        <td id="cu5" ></td>
+        <td id="gamma5" ></td>
+        <td id = "layerBase5"></td>
+      </tr>
+      <tr>
+        <td class="soilDepthTo5_value" ></td>
+        <td><input type="number" id="soilDepthTo6" /></td>
+        <td class="soilDepthTo6_value" ></td>
+        <td id = "strataThickness6"></td>
+        <td id="soilRLfrom6" ></td>
+        <td id="soilRLto6" ></td>
+        <td><input type="text" id="soilType6" /></td>
+        <td><input type="number" id="ID6" /></td>
+        <td id="F6" ></td>
+        <td id="phi6" ></td>
+        <td id="alpha6" ></td>
+        <td id="cu6" ></td>
+        <td id="gamma6" ></td>
+        <td id = "layerBase6"></td>
+      </tr>      
   </tbody>
 </table>
 <script>
@@ -245,7 +277,7 @@
   }
 
   // Replace each soilType input with a select
-  for (let i = 1; i <= 4; i++) { // your table has 4 soil rows
+  for (let i = 1; i <= 6; i++) { // your table has 4 soil rows
     const td = document.getElementById(`soilType${i}`).parentNode; // get the parent td
     td.innerHTML = ""; // clear the input
     td.appendChild(createSoilSelect(`soilType${i}`));

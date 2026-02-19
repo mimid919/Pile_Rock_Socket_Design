@@ -69,6 +69,9 @@ async function updateSoilTable() {
     soilDepthTo2: Number(document.getElementById('soilDepthTo2')?.value) || 0,
     soilDepthTo3: Number(document.getElementById('soilDepthTo3')?.value) || 0,
     soilDepthTo4: Number(document.getElementById('soilDepthTo4')?.value) || 0,
+    soilDepthTo5: Number(document.getElementById('soilDepthTo5')?.value) || 0,
+    soilDepthTo6: Number(document.getElementById('soilDepthTo6')?.value) || 0,
+    
     rl_borehole: Number(document.getElementById('rl_borehole')?.value) || 0,
     shaft_rl: Number(document.getElementById('shaft_rl')?.textContent) || 0,
     socket_start: Number(document.getElementById('socket_start')?.value) || 0,
@@ -77,6 +80,8 @@ async function updateSoilTable() {
     soilType2: document.getElementById('soilType2')?.value || '',
     soilType3: document.getElementById('soilType3')?.value || '',
     soilType4: document.getElementById('soilType4')?.value || '',
+    soilType5: document.getElementById('soilType5')?.value || '',
+    soilType6: document.getElementById('soilType6')?.value || '',
     water_table: Number(document.getElementById('water_table')?.value) || 0,
   };
 
