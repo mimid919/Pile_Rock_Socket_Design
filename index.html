@@ -25,25 +25,25 @@
   <tbody>
     <tr>
       <td>RL of the TOP of borehole</td>
-      <td><input type="number" id="rl_borehole" /></td>
+      <td><input type="number" id="rl_borehole" value="67.8" /></td>
       <td>m</td>
     </tr>
 
     <tr>
       <td>Approx RL at TOP of pile</td>
-      <td><input type="number" id="rl_pile_top" /></td>
+      <td><input type="number" id="rl_pile_top" value="67.8" /></td>
       <td>m</td>
     </tr>
 
     <tr>
       <td>Excavation or Soil Depth to be ignored</td>
-      <td><input type="number" id="soil_ignore" /></td>
+      <td><input type="number" id="soil_ignore" value="0" /></td>
       <td>m</td>
     </tr>
 
     <tr>
       <td>Ground water table at RL</td>
-      <td><input type="number" id="water_table" /></td>
+      <td><input type="number" id="water_table" value="0.5" /></td>
       <td>m</td>
     </tr>
 
@@ -55,25 +55,25 @@
 
     <tr>
       <td>Pile critical length ratio</td>
-      <td><input type="number" id="critical_ratio" step="0.01" /></td>
+      <td><input type="number" id="critical_ratio" step="0.01" value="12" /></td>
       <td>-</td>
     </tr>
 
     <tr>
       <td>Pile critical length</td>
-      <td id="critical_length">0</td>
+      <td id="critical_length"></td>
       <td>m</td>
     </tr>
 
     <tr>
       <td>Socket length starts at RL (rock)</td>
-      <td><input type="number" id="socket_start" /></td>
+      <td><input type="number" id="socket_start" value="50.9"/></td>
       <td>m</td>
     </tr>
 
     <tr>
       <td>Socket length to be ignored</td>
-      <td><input type="number" id="socket_ignore" /></td>
+      <td><input type="number" id="socket_ignore" value="0" /></td>
       <td>m</td>
     </tr>
 
@@ -85,25 +85,25 @@
 
     <tr>
       <td>Pile diameter</td>
-      <td><input type="number" id="pile_diameter" step="0.01" /></td>
+      <td><input type="number" id="pile_diameter" step="0.01" value="900"/></td>
       <td>mm</td>
     </tr>
 
     <tr>
       <td>Ultimate compression S* (ULS)</td>
-      <td><input type="number" id="uls" /></td>
+      <td><input type="number" id="uls" value="4400"/></td>
       <td>kN</td>
     </tr>
 
     <tr>
       <td>Serviceability compression PSLS (SLS)</td>
-      <td><input type="number" id="sls" /></td>
+      <td><input type="number" id="sls" value="3100" /></td>
       <td>kN</td>
     </tr>
 
     <tr>
       <td>Maximum allowable settlement</td>
-      <td><input type="number" id="settlement" step="0.1" /></td>
+      <td><input type="number" id="settlement" step="0.1" value="10"/></td>
       <td>mm</td>
     </tr>
   </tbody>
@@ -151,23 +151,25 @@
     <tbody>
       <tr>
         <td id="soilDepthFrom1"></td>
-        <td><input type="number" id="soilDepthTo1" /></td>
+        <td><input type="number" id="soilDepthTo1" value = "1.1"/></td>
         <td class="soilDepthTo1_value" ></td>
         <td id = "strataThickness1"></td>
         <td id="soilRLfrom1" ></td>
         <td id="soilRLto1" ></td>
-        <td><input type="text" id="soilType1" /></td>
+        <td><input value = "UF-" type="text" id="soilType1" /></td>
         <td><input type="number" id="ID1" /></td>
         <td id="F1" ></td>
         <td id="phi1" ></td>
         <td id="alpha1" ></td>
         <td id="cu1" ></td>      
         <td id="gamma1" ></td> 
-        <td id = "layerBase1"></td>     
-      </tr>
+        <td id = "layerBase1"></td>        
+        <td id = "criticalLength1"></td>     
+        <td id="layerBaseCapped1" ></td>      
+        <td id="midLayer1" ></td> </tr>
       <tr>
         <td class="soilDepthTo1_value" ></td>
-        <td><input type="number" id="soilDepthTo2" /></td>
+        <td><input type="number" id="soilDepthTo2"value = "2.5" /></td>
         <td class="soilDepthTo2_value" ></td>
         <td id = "strataThickness2"></td>
         <td id="soilRLfrom2" ></td>
@@ -179,11 +181,14 @@
         <td id="alpha2" ></td>
         <td id="cu2" ></td>      
         <td id="gamma2" ></td>   
-        <td id = "layerBase2"></td>     
+        <td id = "layerBase2"></td> 
+        <td id = "criticalLength2"></td>     
+        <td id="layerBaseCapped2" ></td>      
+        <td id="midLayer2" ></td> </tr>
       </tr>
       <tr>
         <td class="soilDepthTo2_value" ></td>
-        <td><input type="number" id="soilDepthTo3" /></td>
+        <td><input type="number" id="soilDepthTo3" value = "14"/></td>
         <td class="soilDepthTo3_value" ></td>
         <td id = "strataThickness3"></td>
         <td id="soilRLfrom3" ></td>
@@ -196,10 +201,13 @@
         <td id="cu3" ></td>
         <td id="gamma3" ></td>
         <td id = "layerBase3"></td>
+        <td id = "criticalLength3"></td>     
+        <td id="layerBaseCapped3" ></td>      
+        <td id="midLayer3" ></td>
       </tr>
       <tr>
         <td class="soilDepthTo3_value" ></td>
-        <td><input type="number" id="soilDepthTo4" /></td>
+        <td><input type="number" id="soilDepthTo4" value = "16.9" /></td>
         <td class="soilDepthTo4_value" ></td>
         <td id = "strataThickness4"></td>
         <td id="soilRLfrom4" ></td>
@@ -212,6 +220,9 @@
         <td id="cu4" ></td>
         <td id="gamma4" ></td>
         <td id = "layerBase4"></td>
+        <td id = "criticalLength4"></td>     
+        <td id="layerBaseCapped4" ></td>      
+        <td id="midLayer4" ></td>
       </tr>
       <tr>
         <td class="soilDepthTo4_value" ></td>
@@ -228,6 +239,9 @@
         <td id="cu5" ></td>
         <td id="gamma5" ></td>
         <td id = "layerBase5"></td>
+        <td id = "criticalLength5"></td>     
+        <td id="layerBaseCapped5" ></td>      
+        <td id="midLayer5" ></td>
       </tr>
       <tr>
         <td class="soilDepthTo5_value" ></td>
@@ -244,6 +258,9 @@
         <td id="cu6" ></td>
         <td id="gamma6" ></td>
         <td id = "layerBase6"></td>
+        <td id = "criticalLength6"></td>     
+        <td id="layerBaseCapped6" ></td>      
+        <td id="midLayer6" ></td>
       </tr>      
   </tbody>
 </table>
