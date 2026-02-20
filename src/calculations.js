@@ -172,6 +172,7 @@ export async function soilTable(inputs, rowAmount = 6) {
   const midLayer = [];
   const soilAdhesion = [];
   const soilFriction = [];
+  let soilTotal = 0;
 
   //Loop through rows 1 - rowAmount to calculate values
   for (let i = 0; i < rowAmount; i++) {
@@ -252,12 +253,14 @@ export async function soilTable(inputs, rowAmount = 6) {
         soilAdhesion[i],
       )
     );
-  
+    
+    //Calculate soil total
+    soilTotal = soilTotal + soilFriction[i];
 
   }
 
   // Convert arrays to object with numbered keys for backward compatibility
-  const result = { soilDepthFrom1 };
+  const result = { soilDepthFrom1, soilTotal };
   const keys = {strataThickness, soilRLfrom, soilRLto, F, phi, alpha, cu, gamma, layerBase, 
     criticalLength, layerBaseCapped, midLayer, soilAdhesion, soilFriction};
   Object.entries(keys).forEach(([key, arr]) => {
