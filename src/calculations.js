@@ -85,8 +85,8 @@ function calculateSoilAdhesion(ID, alpha, cu, F, midLayer) {
 }
 
 //Soil ult shaft riction calculation
-function calculateSoilFriction(pile_diameter, soilDepthFrom, strataThickness) {
-  return Math.PI * pile_diameter / 1000 *soilDepthFrom * strataThickness;
+function calculateSoilFriction(pile_diameter, strataThickness, soilAdhesion) {
+  return Math.PI * pile_diameter / 1000 * strataThickness * soilAdhesion;
 }
 
 
@@ -139,8 +139,8 @@ export async function soilTable(inputs, rowAmount = 6) {
                                soilTypes.slice(0, rowAmount).every(t => t) &&
                                ID.slice(0, rowAmount).every(id => id !== null && id !== undefined) && 
                                rl_borehole && shaft_rl  && socket_start &&
-                                rl_pile_top && water_table && critical_ratio && 
-                                critical_length && pile_diameter;
+                               rl_pile_top && water_table && critical_ratio && 
+                               critical_length && pile_diameter;
 
   if (!requiredInputsFilled) {
     const emptyResult = { soilDepthFrom1: '' };
@@ -248,8 +248,8 @@ export async function soilTable(inputs, rowAmount = 6) {
     soilFriction[i] = round(
       calculateSoilFriction(
         pile_diameter,
-        i === 0 ? soilDepthFrom1 : soilDepthTos[i - 1], // soilDepthFrom for current layer
-        strataThickness[i]
+        strataThickness[i], // soilDepthFrom for current layer
+        soilAdhesion[i],
       )
     );
   
