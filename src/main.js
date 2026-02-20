@@ -89,6 +89,13 @@ async function updateSoilTable() {
     water_table: Number(document.getElementById('water_table')?.value) || 0,
     critical_ratio: Number(document.getElementById('critical_ratio')?.value) || 0,
     critical_length: Number(document.getElementById('critical_length')?.textContent) || 0,
+    ID1: Number(document.getElementById('ID1')?.value) || 0,
+    ID2: Number(document.getElementById('ID2')?.value) || 0,
+    ID3: Number(document.getElementById('ID3')?.value) || 0,
+    ID4: Number(document.getElementById('ID4')?.value) || 0,
+    ID5: Number(document.getElementById('ID5')?.value) || 0,
+    ID6: Number(document.getElementById('ID6')?.value) || 0,
+    pile_diameter: Number(document.getElementById('pile_diameter')?.value) || 0,
   };
 
   const rowAmount = Number(document.getElementById('rowAmount')?.value) || 0;

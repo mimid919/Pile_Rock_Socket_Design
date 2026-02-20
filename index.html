@@ -136,6 +136,7 @@
       <th rowspan="2">Critical Length (m)</th>
       <th rowspan="2">σv' at Layer Base (Capped) (kPa)</th>
       <th rowspan="2">σv' at Mid Layer (Capped) (kPa)</th>
+      <th colspan="2" style = "font-size: 17pt">Ultimate shaft adhesion (Soil)</th>
     </tr>
     <tr>
       <th>from (m)</th>
@@ -146,6 +147,9 @@
       <th>φ' (deg)</th>
       <th>α</th>
       <th>cu (kPa)</th>
+      <th>Ult. Shaft Adhesion tult (kPa)</th>
+      <th>Ult. Shaft Friction within Layer (kN)</th>
+
     </tr>
   </thead>
     <tbody>
@@ -157,7 +161,7 @@
         <td id="soilRLfrom1" ></td>
         <td id="soilRLto1" ></td>
         <td><input value = "UF-" type="text" id="soilType1" /></td>
-        <td><input type="number" id="ID1" /></td>
+        <td><input type="number" id="ID1" value = "2"/></td>
         <td id="F1" ></td>
         <td id="phi1" ></td>
         <td id="alpha1" ></td>
@@ -166,7 +170,9 @@
         <td id = "layerBase1"></td>        
         <td id = "criticalLength1"></td>     
         <td id="layerBaseCapped1" ></td>      
-        <td id="midLayer1" ></td> </tr>
+        <td id="midLayer1" ></td> 
+        <td id = "soilAdhesion1"></td>
+        <td id = "soilFriction1"></td></tr>
       <tr>
         <td class="soilDepthTo1_value" ></td>
         <td><input type="number" id="soilDepthTo2" value = "2.5" /></td>
@@ -175,7 +181,7 @@
         <td id="soilRLfrom2" ></td>
         <td id="soilRLto2" ></td>
         <td><input type="text" id="soilType2" /></td>
-        <td><input type="number" id="ID2" /></td>
+        <td><input type="number" id="ID2" value = "1"/></td>
         <td id="F2" ></td>
         <td id="phi2" ></td>
         <td id="alpha2" ></td>
@@ -184,7 +190,10 @@
         <td id = "layerBase2"></td> 
         <td id = "criticalLength2"></td>     
         <td id="layerBaseCapped2" ></td>      
-        <td id="midLayer2" ></td> </tr>
+        <td id="midLayer2" ></td> 
+        <td id = "soilAdhesion2"></td>
+        <td id = "soilFriction2"></td>
+      </tr>
       </tr>
       <tr>
         <td class="soilDepthTo2_value" ></td>
@@ -194,7 +203,7 @@
         <td id="soilRLfrom3" ></td>
         <td id="soilRLto3" ></td>
         <td><input type="text" id="soilType3" /></td>
-        <td><input type="number" id="ID3" /></td>
+        <td><input type="number" id="ID3" value = "1"/></td>
         <td id="F3" ></td>
         <td id="phi3" ></td>
         <td id="alpha3" ></td>
@@ -203,7 +212,9 @@
         <td id = "layerBase3"></td>
         <td id = "criticalLength3"></td>     
         <td id="layerBaseCapped3" ></td>      
-        <td id="midLayer3" ></td>
+        <td id="midLayer3" >
+        <td id = "soilAdhesion3"></td>
+        <td id = "soilFriction3"></td>        </td>
       </tr>
       <tr>
         <td class="soilDepthTo3_value" ></td>
@@ -213,7 +224,7 @@
         <td id="soilRLfrom4" ></td>
         <td id="soilRLto4" ></td>
         <td><input type="text" id="soilType4" /></td>
-        <td><input type="number" id="ID4" /></td>
+        <td><input type="number" id="ID4" value = "1"/></td>
         <td id="F4" ></td>
         <td id="phi4" ></td>
         <td id="alpha4" ></td>
@@ -222,7 +233,9 @@
         <td id = "layerBase4"></td>
         <td id = "criticalLength4"></td>     
         <td id="layerBaseCapped4" ></td>      
-        <td id="midLayer4" ></td>
+        <td id="midLayer4" >
+        <td id = "soilAdhesion4"></td>
+        <td id = "soilFriction4"></td>        </td>
       </tr>
       <tr>
         <td class="soilDepthTo4_value" ></td>
@@ -241,7 +254,9 @@
         <td id = "layerBase5"></td>
         <td id = "criticalLength5"></td>     
         <td id="layerBaseCapped5" ></td>      
-        <td id="midLayer5" ></td>
+        <td id="midLayer5" >
+        <td id = "soilAdhesion5"></td>
+        <td id = "soilFriction5"></td>        </td>
       </tr>
       <tr>
         <td class="soilDepthTo5_value" ></td>
@@ -260,7 +275,9 @@
         <td id = "layerBase6"></td>
         <td id = "criticalLength6"></td>     
         <td id="layerBaseCapped6" ></td>      
-        <td id="midLayer6" ></td>
+        <td id="midLayer6" >
+        <td id = "soilAdhesion6"></td>
+        <td id = "soilFriction6"></td>        </td>
       </tr>      
   </tbody>
 </table>

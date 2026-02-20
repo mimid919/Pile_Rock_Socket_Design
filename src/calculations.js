@@ -69,6 +69,27 @@ function calculateMidLayer(critical_ratio, soilDepthFrom, layerBaseCappedPrev, l
 
 }
 
+// Soil ult shaft adhesion calculation
+function calculateSoilAdhesion(ID, alpha, cu, F, midLayer) {
+  let result;
+
+  if (ID == 1){
+    result = Math.min(60, alpha * cu);
+  } else if (ID == 2){
+    result = Math.min(100, F * midLayer);
+  } else {
+    result = 0;
+  }
+
+  return result;
+}
+
+//Soil ult shaft riction calculation
+function calculateSoilFriction(pile_diameter, soilDepthFrom, strataThickness) {
+  return Math.PI * pile_diameter / 1000 *soilDepthFrom * strataThickness;
+}
+
+
 
 
 
@@ -101,24 +122,30 @@ export function initialInputsTable(inputs) {
 //----------------------------------------- SOIL TABLE - STRATA THICKNESS -----------------------------------------------
 export async function soilTable(inputs, rowAmount = 6) {
 
-  const { rl_borehole, shaft_rl, socket_start, rl_pile_top, water_table, critical_ratio, critical_length } = inputs;
+  const { rl_borehole, shaft_rl, socket_start, rl_pile_top, water_table, critical_ratio, critical_length, pile_diameter } = inputs;
  
   // Collect soil depths and types dynamically
   const soilDepthTos = [];
   const soilTypes = [];
+  const ID = [];
   for (let i = 1; i <= rowAmount; i++) {
     soilDepthTos.push(Number(inputs[`soilDepthTo${i}`]) || 0);
     soilTypes.push(inputs[`soilType${i}`] || '');
+    ID.push(Number(inputs[`ID${i}`]) || 0);
   }
 
   // Check required inputs for active layers
   const requiredInputsFilled = soilDepthTos.slice(0, rowAmount).every(d => d) &&
                                soilTypes.slice(0, rowAmount).every(t => t) &&
-                               rl_borehole && rl_pile_top && socket_start;
+                               ID.slice(0, rowAmount).every(id => id !== null && id !== undefined) && 
+                               rl_borehole && shaft_rl  && socket_start &&
+                                rl_pile_top && water_table && critical_ratio && 
+                                critical_length && pile_diameter;
 
   if (!requiredInputsFilled) {
     const emptyResult = { soilDepthFrom1: '' };
-    const keys = ['strataThickness','soilRLfrom','soilRLto','F','phi','alpha','cu','gamma','layerBase'];
+    const keys = ['strataThickness','soilRLfrom','soilRLto','F','phi','alpha','cu','gamma','layerBase', 
+                  'criticalLength', 'layerBaseCapped', 'midLayer', 'soilAdhesion', 'soilFriction'];
     keys.forEach(key => {
       for (let i = 1; i <= rowAmount; i++) {
         emptyResult[`${key}${i}`] = '';
@@ -143,6 +170,8 @@ export async function soilTable(inputs, rowAmount = 6) {
   const criticalLength = [];
   const layerBaseCapped = [];
   const midLayer = [];
+  const soilAdhesion = [];
+  const soilFriction = [];
 
   //Loop through rows 1 - rowAmount to calculate values
   for (let i = 0; i < rowAmount; i++) {
@@ -203,6 +232,26 @@ export async function soilTable(inputs, rowAmount = 6) {
         layerBaseCapped[i]
       )
     );
+
+    //Soil adhesion
+    soilAdhesion[i] = round(
+      calculateSoilAdhesion(
+        ID[i], // ID
+        alpha[i],
+        cu[i],
+        F[i],
+        midLayer[i]
+      )
+    );
+
+    //Soil friction
+    soilFriction[i] = round(
+      calculateSoilFriction(
+        pile_diameter,
+        i === 0 ? soilDepthFrom1 : soilDepthTos[i - 1], // soilDepthFrom for current layer
+        strataThickness[i]
+      )
+    );
   
 
   }
@@ -210,7 +259,7 @@ export async function soilTable(inputs, rowAmount = 6) {
   // Convert arrays to object with numbered keys for backward compatibility
   const result = { soilDepthFrom1 };
   const keys = {strataThickness, soilRLfrom, soilRLto, F, phi, alpha, cu, gamma, layerBase, 
-    criticalLength, layerBaseCapped, midLayer };
+    criticalLength, layerBaseCapped, midLayer, soilAdhesion, soilFriction};
   Object.entries(keys).forEach(([key, arr]) => {
     for (let i = 0; i < rowAmount; i++) {
       result[`${key}${i+1}`] = arr[i];
