@@ -37,7 +37,7 @@ function calculateCriticalLength(rl_pile_top, RLto, critical_length, strataThick
 }
 
 //Layer base capped calculation
-function calculateLayerBaseCappedValue(water_table, RLto, criticalLengthPrev, gamma, criticalLength, RLfrom) {
+function calculateLayerBaseCapped(water_table, RLto, criticalLengthPrev, gamma, criticalLength, RLfrom) {
     let result;
 
     if (water_table < RLto) {
@@ -54,6 +54,22 @@ function calculateLayerBaseCappedValue(water_table, RLto, criticalLengthPrev, ga
 
     return result;
 }
+
+//Mid layer capped calculation
+function calculateMidLayer(critical_ratio, soilDepthFrom, layerBaseCappedPrev, layerBaseCapped) {
+    let result;
+
+    if (critical_ratio < soilDepthFrom){
+      result = layerBaseCapped;
+    } else {
+      result = layerBaseCappedPrev + ((layerBaseCapped - layerBaseCappedPrev) / 2);
+    }
+
+    return result;
+
+}
+
+
 
 
 //----------------------------------------- INITIAL TABLE -----------------------------------------------
@@ -126,7 +142,7 @@ export async function soilTable(inputs, rowAmount = 6) {
   const layerBase = [];
   const criticalLength = [];
   const layerBaseCapped = [];
-  // const midLayer = [];
+  const midLayer = [];
 
   //Loop through rows 1 - rowAmount to calculate values
   for (let i = 0; i < rowAmount; i++) {
@@ -157,18 +173,18 @@ export async function soilTable(inputs, rowAmount = 6) {
     );
 
     // Critical length
-  const prevSum = i === 0 ? 0 : criticalLength.slice(0, i).reduce((acc, val) => acc + val, 0);
-  criticalLength[i] = calculateCriticalLength(
-    rl_pile_top,
-    soilRLto[i],
-    critical_length,
-    strataThickness[i],
-    prevSum // only sum of previous critical lengths
-  );
+    const prevSum = i === 0 ? 0 : criticalLength.slice(0, i).reduce((acc, val) => acc + val, 0);
+    criticalLength[i] = calculateCriticalLength(
+      rl_pile_top,
+      soilRLto[i],
+      critical_length,
+      strataThickness[i],
+      prevSum // only sum of previous critical lengths
+    );
 
     //Layer base capped
     layerBaseCapped[i] = round(
-      calculateLayerBaseCappedValue(
+      calculateLayerBaseCapped(
         water_table,
         soilRLto[i],
         i === 0 ? 0 : layerBaseCapped[i-1],
@@ -177,13 +193,24 @@ export async function soilTable(inputs, rowAmount = 6) {
         soilRLfrom[i]
       )
     );
+
+    //Mid layer capped
+    midLayer[i] = round(
+      calculateMidLayer(
+        critical_ratio,
+        i === 0 ? soilDepthFrom1 : soilDepthTos[i - 1], // soilDepthFrom for current layer
+        i === 0 ? 0 : layerBaseCapped[i-1],
+        layerBaseCapped[i]
+      )
+    );
   
 
   }
 
   // Convert arrays to object with numbered keys for backward compatibility
   const result = { soilDepthFrom1 };
-  const keys = {strataThickness, soilRLfrom, soilRLto, F, phi, alpha, cu, gamma, layerBase, criticalLength, layerBaseCapped};
+  const keys = {strataThickness, soilRLfrom, soilRLto, F, phi, alpha, cu, gamma, layerBase, 
+    criticalLength, layerBaseCapped, midLayer };
   Object.entries(keys).forEach(([key, arr]) => {
     for (let i = 0; i < rowAmount; i++) {
       result[`${key}${i+1}`] = arr[i];
