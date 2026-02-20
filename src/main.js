@@ -88,6 +88,7 @@ async function updateSoilTable() {
     soilType6: document.getElementById('soilType6')?.value || '',
     water_table: Number(document.getElementById('water_table')?.value) || 0,
     critical_ratio: Number(document.getElementById('critical_ratio')?.value) || 0,
+    critical_length: Number(document.getElementById('critical_length')?.textContent) || 0,
   };
 
   const rowAmount = Number(document.getElementById('rowAmount')?.value) || 0;

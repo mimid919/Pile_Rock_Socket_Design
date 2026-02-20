@@ -20,16 +20,36 @@ function calculateLayerBase(water_table, RLto, RLfrom, gamma, strataThickness, L
 }
 
 //Critical length calculation
-function calculateCriticalLength(rl_pile_top, RLto, critical_ratio, strataThickness, Q, currentIndex) {
+function calculateCriticalLength(rl_pile_top, RLto, critical_length, strataThickness, prevSum) {
     let result;
 
-    if ((rl_pile_top - RLto) < critical_ratio) {
+    if ((rl_pile_top - RLto) < critical_length) {
         // Excel: IF($L$6-RLto < $L$11, strataThickness, ...)
         result = round(strataThickness);
+        console.log(`Critical length for RLto ${RLto} is strataThickness: ${result}`);
     } else {
         // Excel: ELSE part: $L$11 - SUM(previous Q values)
-        const sumPrevQ = Q.slice(0, currentIndex).reduce((acc, val) => acc + val, 0);
-        result = round(critical_ratio - sumPrevQ);
+        result = round(critical_length - prevSum);
+        console.log(`Returning ${critical_length} - ${prevSum} = ${result}`);
+    }
+
+    return result;
+}
+
+//Layer base capped calculation
+function calculateLayerBaseCappedValue(water_table, RLto, criticalLengthPrev, gamma, criticalLength, RLfrom) {
+    let result;
+
+    if (water_table < RLto) {
+        // First inner IF
+        result = criticalLengthPrev + (gamma * criticalLength);
+    } else {
+        // Second inner IF
+        if (RLfrom < water_table) {
+            result = criticalLengthPrev + ((gamma - 10) * criticalLength);
+        } else {
+            result = criticalLengthPrev + (gamma * criticalLength) - (10 * (water_table - RLto));
+        }
     }
 
     return result;
@@ -64,9 +84,8 @@ export function initialInputsTable(inputs) {
 
 //----------------------------------------- SOIL TABLE - STRATA THICKNESS -----------------------------------------------
 export async function soilTable(inputs, rowAmount = 6) {
-  console.log('soilTable() entered');
 
-  const { rl_borehole, shaft_rl, socket_start, rl_pile_top, water_table, critical_ratio } = inputs;
+  const { rl_borehole, shaft_rl, socket_start, rl_pile_top, water_table, critical_ratio, critical_length } = inputs;
  
   // Collect soil depths and types dynamically
   const soilDepthTos = [];
@@ -106,7 +125,7 @@ export async function soilTable(inputs, rowAmount = 6) {
   const gamma = [];
   const layerBase = [];
   const criticalLength = [];
-  // const layerBaseCapped = [];
+  const layerBaseCapped = [];
   // const midLayer = [];
 
   //Loop through rows 1 - rowAmount to calculate values
@@ -137,15 +156,26 @@ export async function soilTable(inputs, rowAmount = 6) {
       )
     );
 
-        // Critical length
-    const prevSum = criticalLength.reduce((acc, val) => acc + val, 0); // sum of already calculated
-    criticalLength[i] = calculateCriticalLength(
-      rl_pile_top,
-      soilRLto[i],
-      critical_ratio,
-      strataThickness[i],
-      criticalLength,
-      i
+    // Critical length
+  const prevSum = i === 0 ? 0 : criticalLength.slice(0, i).reduce((acc, val) => acc + val, 0);
+  criticalLength[i] = calculateCriticalLength(
+    rl_pile_top,
+    soilRLto[i],
+    critical_length,
+    strataThickness[i],
+    prevSum // only sum of previous critical lengths
+  );
+
+    //Layer base capped
+    layerBaseCapped[i] = round(
+      calculateLayerBaseCappedValue(
+        water_table,
+        soilRLto[i],
+        i === 0 ? 0 : layerBaseCapped[i-1],
+        gamma[i],
+        criticalLength[i],
+        soilRLfrom[i]
+      )
     );
   
 
@@ -153,7 +183,7 @@ export async function soilTable(inputs, rowAmount = 6) {
 
   // Convert arrays to object with numbered keys for backward compatibility
   const result = { soilDepthFrom1 };
-  const keys = {strataThickness, soilRLfrom, soilRLto, F, phi, alpha, cu, gamma, layerBase, criticalLength};
+  const keys = {strataThickness, soilRLfrom, soilRLto, F, phi, alpha, cu, gamma, layerBase, criticalLength, layerBaseCapped};
   Object.entries(keys).forEach(([key, arr]) => {
     for (let i = 0; i < rowAmount; i++) {
       result[`${key}${i+1}`] = arr[i];
