@@ -124,8 +124,9 @@ async function updateRockTable() {
   const rowAmount = Number(document.getElementById('soilRowAmount')?.value) || 0;
 
 
-  const rockInputs = {
+  const rockInputs = { 
     rl_borehole: Number(document.getElementById('rl_borehole')?.value) || 0,
+    // For caclulating rockDepthFrom1
     soilRLto: Number(document.getElementById(`soilRLto${rowAmount}`)?.textContent) || 0,
 
     rockDepthTo1: Number(document.getElementById('rockDepthTo1')?.value) || 0,

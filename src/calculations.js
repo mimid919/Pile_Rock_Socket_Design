@@ -287,12 +287,11 @@ export async function rockTable(inputs, rockRowAmount = 3) {
     rockDepthTos.push(Number(inputs[`rockDepthTo${i}`]) || 0);
   }
 
-  // Check required inputs for active layers
-  const requiredInputsFilled = rockDepthTos.slice(0, rockRowAmount).every(d => d) 
-
+  // If required inputs are filled in return empty box
+  const requiredInputsFilled = rockDepthTos.slice(0, rockRowAmount).every(d => d) && rl_borehole && soilRLto;
   if (!requiredInputsFilled) {
     const emptyResult = { rockDepthFrom1: '' };
-    const keys = ['rockDepthFrom',];
+    const keys = [rockStrataThickness];
     keys.forEach(key => {
       for (let i = 1; i <= rockRowAmount; i++) {
         emptyResult[`${key}${i}`] = '';
@@ -305,36 +304,28 @@ export async function rockTable(inputs, rockRowAmount = 3) {
   let rockDepthFrom1 = rl_borehole - soilRLto;
   console.log(`Calculated rockDepthFrom1: ${rockDepthFrom1} = rl_borehole ${rl_borehole} - soilRLFrom ${soilRLto}`);
 
-  // // Arrays to store results
-  // const strataThickness = [];
-  // const soilRLfrom = [];
-  // const soilRLto = [];
-  // const F = [];
-  // const phi = [];
-  // const alpha = [];
-  // const cu = [];
-  // const gamma = [];
-  // const layerBase = [];
-  // const criticalLength = [];
-  // const layerBaseCapped = [];
-  // const midLayer = [];
-  // const soilAdhesion = [];
-  // const soilFriction = [];
-  // let soilTotal = 0;
+//------------------------------------- Inputs handling END -------------------------------------------------
 
+  // Initialise arrays to store results
+  const rockStrataThickness = [];
 
-// Convert arrays to object with numbered keys for backward compatibility
+  //Loop through rows 1 - rockRowAmount to calculate values
+  for (let i = 0; i < rockRowAmount; i++) {
+    // Strata thickness
+    rockStrataThickness[i] = round(i === 0 ? rockDepthTos[i] - rockDepthFrom1 : rockDepthTos[i] - rockDepthTos[i-1]);
+
+  }
+
+  // Convert arrays to object with numbered keys for backward compatibility
   const result = { rockDepthFrom1 };
-  // const keys = {rockDepthFrom: rockDepthTos};
-  // Object.entries(keys).forEach(([key, arr]) => {
-  //   for (let i = 0; i < rockRowAmount; i++) {
-  //     result[`${key}${i+1}`] = arr[i];
-  //   }
-  // });
+  const keys = {rockStrataThickness};
+  Object.entries(keys).forEach(([key, arr]) => {
+    for (let i = 0; i < rockRowAmount; i++) {
+      result[`${key}${i+1}`] = arr[i];
+    }
+  });
 
   return result;
-
-//------------------------------------- Inputs handling -------------------------------------------------
 
 }
 

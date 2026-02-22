@@ -341,48 +341,83 @@
       <tr>
         <td id="rockDepthFrom1"></td>
         <td><input type="number" id="rockDepthTo1" value = "20.6"/></td>
+        <td id = "rockStrataThickness1"></td>
+        <td id="rockRLfrom1" ></td>
+        <td id="rockRLto1" ></td>
+        <td><input type="text" id="rockClass1" /></td>
+      </tr>
       <tr>
         <td class="rockDepthTo1_value" ></td>
         <td><input type="number" id="rockDepthTo2" value = "31.2" /></td>
+        <td id = "rockStrataThickness2"></td>
+        <td id="rockRLfrom2" ></td>
+        <td id="rockRLto2" ></td>
+        <td><input type="text" id="rockClass2" /></td>
       </tr>
       <tr>
         <td class="rockDepthTo2_value" ></td>
         <td><input type="number" id="rockDepthTo3" value = "32.5"/></td>
+        <td id = "rockStrataThickness3"></td>
+        <td id="rockRLfrom3" ></td>
+        <td id="rockRLto3" ></td>
+        <td><input type="text" id="rockClass3" /></td>
       </tr>
       <tr>
         <td class="rockDepthTo3_value" ></td>
         <td><input type="number" id="rockDepthTo4"/></td>
+        <td id = "rockStrataThickness4"></td>
+        <td id="rockRLfrom4" ></td>
+        <td id="rockRLto4" ></td>
+        <td><input type="text" id="rockClass4" /></td>
       </tr>
       <tr>
         <td class="rockDepthTo4_value" ></td>
         <td><input type="number" id="rockDepthTo5" /></td>
+        <td id = "rockStrataThickness5"></td>
+        <td id="rockRLfrom5" ></td>
+        <td id="rockRLto5" ></td>
+        <td><input type="text" id="rockClass5" /></td>
       </tr>
       <tr>
         <td class="rockDepthTo5_value" ></td>
         <td><input type="number" id="rockDepthTo6" /></td>
+        <td id = "rockStrataThickness6"></td>
+        <td id="rockRLfrom6" ></td>
+        <td id="rockRLto6" ></td>
+        <td><input type="text" id="rockClass6" /></td>
       </tr>   
       <tr>
         <td class="rockDepthTo6_value" ></td>
-        <td><input type="number" id="rockDepthTo6" /></td>
+        <td><input type="number" id="rockDepthTo7" /></td>
+        <td id = "rockStrataThickness7"></td>
+        <td id="rockRLfrom7" ></td>
+        <td id="rockRLto7" ></td>
+        <td><input type="text" id="rockClass7" /></td>
       </tr>
       <tr>
         <td class="rockDepthTo7_value" ></td>
-        <td><input type="number" id="rockDepthTo7" /></td>
-      </tr>
-      <tr>
-        <td class="rockDepthTo8_value" ></td>
-        <td><input type="number" id="rockDepthTo8"/></td>
+        <td><input type="number" id="rockDepthTo8" /></td>
+        <td id = "rockStrataThickness8"></td>
+        <td id="rockRLfrom8" ></td>
+        <td id="rockRLto8" ></td>
+        <td><input type="text" id="rockClass8" /></td>  
       </tr>
       <tr>
         <td class="rockDepthTo8_value" ></td>
         <td><input type="number" id="rockDepthTo9"/></td>
-      </tr>
+        <td id = "rockStrataThickness9"></td>
+        <td id="rockRLfrom9" ></td>
+        <td id="rockRLto9" ></td>
       <tr>
         <td class="rockDepthTo9_value" ></td>
         <td><input type="number" id="rockDepthTo10" /></td>
+        <td id = "rockStrataThickness10"></td>
+        <td id="rockRLfrom10" ></td>
+        <td id="rockRLto10" ></td>
       </tr>
 
   </tbody>
+</table>
 <script>
   // Global list of soil/rock classes
   const soilClasses = [
@@ -430,7 +465,13 @@
     td.innerHTML = ""; // clear the input
     td.appendChild(createSoilSelect(`soilType${i}`));
   }
-</script>
+
+  // Replace each rockType input with a select
+  for (let i = 1; i <= 10; i++) { // your table has 4 soil rows
+    const td = document.getElementById(`rockClass${i}`).parentNode; // get the parent td
+    td.innerHTML = ""; // clear the input
+    td.appendChild(createSoilSelect(`rockClass${i}`));
+  }</script>
 
 </body>
 </html>
