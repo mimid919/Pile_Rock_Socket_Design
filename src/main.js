@@ -40,6 +40,16 @@ const inputIds = [
   'rockDepthTo8',
   'rockDepthTo9',
   'rockDepthTo10',
+  'rockClass1',
+  'rockClass2',
+  'rockClass3',
+  'rockClass4',
+  'rockClass5',
+  'rockClass6',
+  'rockClass7',
+  'rockClass8',
+  'rockClass9',
+  'rockClass10',
 ];
 
 // Generic function to update _value spans for any input
@@ -139,6 +149,17 @@ async function updateRockTable() {
     rockDepthTo8: Number(document.getElementById('rockDepthTo8')?.value) || 0,
     rockDepthTo9: Number(document.getElementById('rockDepthTo9')?.value) || 0,
     rockDepthTo10: Number(document.getElementById('rockDepthTo10')?.value) || 0,
+
+    rockClass1: document.getElementById('rockClass1')?.value || '',
+    rockClass2: document.getElementById('rockClass2')?.value || '',
+    rockClass3: document.getElementById('rockClass3')?.value || '',
+    rockClass4: document.getElementById('rockClass4')?.value || '',
+    rockClass5: document.getElementById('rockClass5')?.value || '',
+    rockClass6: document.getElementById('rockClass6')?.value || '',
+    rockClass7: document.getElementById('rockClass7')?.value || '',
+    rockClass8: document.getElementById('rockClass8')?.value || '',
+    rockClass9: document.getElementById('rockClass9')?.value || '',
+    rockClass10: document.getElementById('rockClass10')?.value || '',
     
     
   };
@@ -194,6 +215,8 @@ document.getElementById('rockRowAmount').addEventListener('change', () => {
   updateRockTableRows();
   updateRockTable(); // optional: recalc only for visible layers
 });
+
+
 updateSoilTableRows(); // Initial call to set correct rows on page load
 updateRockTableRows(); // Initial call to set correct rows on page load
 
