@@ -111,8 +111,8 @@
 
 <!--------------------- TABLE 2----------------------->
 <h1>Subsurface Conditions (Soil Only)</h1>
-<label for="rowAmount">Number of Rows:</label>
-<select id="rowAmount">
+<label for="soilRowAmount">Number of Rows:</label>
+<select id="soilRowAmount">
   <option value="1">1</option>
   <option value="2">2</option>
   <option value="3">3</option>
@@ -132,10 +132,10 @@
       <th colspan="2">Drained Soil Parameters</th>
       <th colspan="2">Undrained Soil Parameters</th>
       <th rowspan="2">γ (kN/m³)</th>
-      <th rowspan="2">σv' at Layer Base (kPa)</th>
+      <th rowspan="2">σ<sub>v</sub>' at Layer Base (kPa)</th>
       <th rowspan="2">Critical Length (m)</th>
-      <th rowspan="2">σv' at Layer Base (Capped) (kPa)</th>
-      <th rowspan="2">σv' at Mid Layer (Capped) (kPa)</th>
+      <th rowspan="2">σ<sub>v</sub>' at Layer Base (Capped) (kPa)</th>
+      <th rowspan="2">σ<sub>v</sub>' at Mid Layer (Capped) (kPa)</th>
       <th colspan="2" style = "font-size: 17pt">Ultimate shaft adhesion (Soil)</th>
     </tr>
     <tr>
@@ -147,7 +147,7 @@
       <th>φ' (deg)</th>
       <th>α</th>
       <th>cu (kPa)</th>
-      <th>Ult. Shaft Adhesion tult (kPa)</th>
+      <th>Ult. Shaft Adhesion 𝝉<sub>ult</sub> (kPa)</th>
       <th>Ult. Shaft Friction within Layer (kN)</th>
 
     </tr>
@@ -292,6 +292,97 @@
 </table>
 
 
+<!--------------------- TABLE 3 ----------------------->
+<h1>Subsurface Conditions (Rock Only)</h1>
+<label for="rockRowAmount">Number of Rows:</label>
+<select id="rockRowAmount">
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3" selected>3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">10</option>
+</select>
+<table id = "rockTable" border="1">
+  <thead>
+    <tr>
+      <th colspan="2">Depth</th>
+      <th rowspan="2">Strata thickness, z (m)</th>
+      <th colspan="2">RL</th>
+      <th rowspan="2">Rock Class</th>
+      <th rowspan="2">Eᵣ (MPa)</th>
+      <th rowspan="2">Ult. End Bearing q<sub>b ult</sub> (MPa)</th>
+      <th rowspan="2">Serv. End Bearing q<sub>be</sub> (MPa)</th>
+      <th rowspan="2">Ult. Shaft Adhesion 𝝉<sub>ult</sub> (kPa)</th>
+      <th rowspan="2">Effective Cohesion C' (kPa)</th>
+      <th rowspan="2">Effective friction Angle ϕ (deg)</th>
+      <th rowspan="2">Poisson’s ratio v</th>
+      <th colspan="2" style = "font-size: 17pt">Ultimate shaft adhesion (Rock) for Settlement Check</th>
+      <th colspan="2" style = "font-size: 17pt">Ultimate shaft adhesion (Rock)</th>
+      <th colspan="2" style = "font-size: 17pt">Pile bearing layer selection aid</th>    </tr>
+    <tr>
+      <th>from (m)</th>
+      <th>to (m)</th>
+      <th>from (m)</th>
+      <th>to (m)</th>
+      <th>Socket Length, L<sub>max</sub> (m)</th>
+      <th>Ult. Shaft Adhesion (kN)</th>
+      <th>Required Socket Length, L<sub>compression</sub> (m)</th>
+      <th>Ult. Shaft Adhesion (kN)</th>
+      <th>Layer</th>
+      <th>Rock class</th>
+    </tr>
+  </thead>
+  <tbody id = "rockTableBody">
+      <tr>
+        <td id="rockDepthFrom1"></td>
+        <td><input type="number" id="rockDepthTo1" value = "20.6"/></td>
+      <tr>
+        <td class="rockDepthTo1_value" ></td>
+        <td><input type="number" id="rockDepthTo2" value = "31.2" /></td>
+      </tr>
+      <tr>
+        <td class="rockDepthTo2_value" ></td>
+        <td><input type="number" id="rockDepthTo3" value = "32.5"/></td>
+      </tr>
+      <tr>
+        <td class="rockDepthTo3_value" ></td>
+        <td><input type="number" id="rockDepthTo4"/></td>
+      </tr>
+      <tr>
+        <td class="rockDepthTo4_value" ></td>
+        <td><input type="number" id="rockDepthTo5" /></td>
+      </tr>
+      <tr>
+        <td class="rockDepthTo5_value" ></td>
+        <td><input type="number" id="rockDepthTo6" /></td>
+      </tr>   
+      <tr>
+        <td class="rockDepthTo6_value" ></td>
+        <td><input type="number" id="rockDepthTo6" /></td>
+      </tr>
+      <tr>
+        <td class="rockDepthTo7_value" ></td>
+        <td><input type="number" id="rockDepthTo7" /></td>
+      </tr>
+      <tr>
+        <td class="rockDepthTo8_value" ></td>
+        <td><input type="number" id="rockDepthTo8"/></td>
+      </tr>
+      <tr>
+        <td class="rockDepthTo8_value" ></td>
+        <td><input type="number" id="rockDepthTo9"/></td>
+      </tr>
+      <tr>
+        <td class="rockDepthTo9_value" ></td>
+        <td><input type="number" id="rockDepthTo10" /></td>
+      </tr>
+
+  </tbody>
 <script>
   // Global list of soil/rock classes
   const soilClasses = [

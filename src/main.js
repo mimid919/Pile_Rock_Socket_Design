@@ -1,4 +1,4 @@
-import { initialInputsTable, soilTable } from './calculations.js';
+import { initialInputsTable, soilTable, rockTable } from './calculations.js';
 import { setMultipleValues } from './tableHandler.js';
 
 // All inputs you want to update to using "_value" and add event listeners
@@ -30,7 +30,16 @@ const inputIds = [
   'ID2',
   'ID3',
   'ID4',
-
+  'rockDepthTo1',
+  'rockDepthTo2',
+  'rockDepthTo3',
+  'rockDepthTo4',
+  'rockDepthTo5',
+  'rockDepthTo6',
+  'rockDepthTo7',
+  'rockDepthTo8',
+  'rockDepthTo9',
+  'rockDepthTo10',
 ];
 
 // Generic function to update _value spans for any input
@@ -98,36 +107,94 @@ async function updateSoilTable() {
     pile_diameter: Number(document.getElementById('pile_diameter')?.value) || 0,
   };
 
-  const rowAmount = Number(document.getElementById('rowAmount')?.value) || 0;
+  const soilRowAmount = Number(document.getElementById('soilRowAmount')?.value) || 0;
 
 
-  const derivedsoilTable = await soilTable(soilInputs, rowAmount  );
+  const derivedsoilTable = await soilTable(soilInputs, soilRowAmount  );
 
   setMultipleValues({...derivedsoilTable});
 
 }
 
-function updateSoilTableRows() {
-  const rowAmount = Number(document.getElementById('rowAmount').value);
+//---------------------------- ROCK TABLE ---------------------------
+async function updateRockTable() {
+  inputIds.forEach(updateValueSpans);
+
+  //Calculating rock from value 1
+  const rowAmount = Number(document.getElementById('soilRowAmount')?.value) || 0;
+
+
+  const rockInputs = {
+    rl_borehole: Number(document.getElementById('rl_borehole')?.value) || 0,
+    soilRLto: Number(document.getElementById(`soilRLto${rowAmount}`)?.textContent) || 0,
+
+    rockDepthTo1: Number(document.getElementById('rockDepthTo1')?.value) || 0,
+    rockDepthTo2: Number(document.getElementById('rockDepthTo2')?.value) || 0,
+    rockDepthTo3: Number(document.getElementById('rockDepthTo3')?.value) || 0,
+    rockDepthTo4: Number(document.getElementById('rockDepthTo4')?.value) || 0,
+    rockDepthTo5: Number(document.getElementById('rockDepthTo5')?.value) || 0,
+    rockDepthTo6: Number(document.getElementById('rockDepthTo6')?.value) || 0,
+    rockDepthTo7: Number(document.getElementById('rockDepthTo7')?.value) || 0,
+    rockDepthTo8: Number(document.getElementById('rockDepthTo8')?.value) || 0,
+    rockDepthTo9: Number(document.getElementById('rockDepthTo9')?.value) || 0,
+    rockDepthTo10: Number(document.getElementById('rockDepthTo10')?.value) || 0,
+    
+    
+  };
+
+  const rockRowAmount = Number(document.getElementById('rockRowAmount')?.value) || 0;
+
+
+  const derivedRockTable = await rockTable(rockInputs, rockRowAmount);
+
+  setMultipleValues({...derivedRockTable});
+
+}
+
+
+// Update soil table rows based on soilRowAmount
+async function updateSoilTableRows() {
+  const soilRowAmount = Number(document.getElementById('soilRowAmount').value);
   const table = document.getElementById('soilTable');
   const rows = table.querySelectorAll('tbody tr');
 
   rows.forEach((row, index) => {
-    if (index < rowAmount) {
+    if (index < soilRowAmount) {
       row.style.display = ''; // show
     } else {
       row.style.display = 'none'; // hide
     }
   });
 }
-// Call whenever rowAmount changes
-document.getElementById('rowAmount').addEventListener('change', () => {
+
+// Call whenever soilRowAmount changes
+document.getElementById('soilRowAmount').addEventListener('change', () => {
   updateSoilTableRows();
   updateSoilTable(); // optional: recalc only for visible layers
 });
 
+// Update rock table rows based on soilRowAmount
+function updateRockTableRows() {
+  const soilRowAmount = Number(document.getElementById('rockRowAmount').value);
+  const table = document.getElementById('rockTable');
+  const rows = table.querySelectorAll('tbody tr');
 
+  rows.forEach((row, index) => {
+    if (index < soilRowAmount) {
+      row.style.display = ''; // show
+    } else {
+      row.style.display = 'none'; // hide
+    }
+  });
+}
+
+// Call whenever soilRowAmount changes
+document.getElementById('rockRowAmount').addEventListener('change', () => {
+  updateRockTableRows();
+  updateRockTable(); // optional: recalc only for visible layers
+});
 updateSoilTableRows(); // Initial call to set correct rows on page load
+updateRockTableRows(); // Initial call to set correct rows on page load
 
 
 
@@ -141,10 +208,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     el.addEventListener('input', async () => {
       updateInitialTable();
       await updateSoilTable();
+      await updateRockTable();
     });
   });
 
   // Initial call to populate _values and derived calculations
   updateInitialTable();
   await updateSoilTable();
-});
+  await updateRockTable();});

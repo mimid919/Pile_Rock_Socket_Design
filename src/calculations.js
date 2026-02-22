@@ -119,25 +119,26 @@ export function initialInputsTable(inputs) {
   return { shaft_rl, critical_length, actual_socket };
 }
 
-//----------------------------------------- SOIL TABLE - STRATA THICKNESS -----------------------------------------------
-export async function soilTable(inputs, rowAmount = 6) {
+//----------------------------------------- SOIL TABLE  -----------------------------------------------
+export async function soilTable(inputs, soilRowAmount = 4) {
 
+//------------------------------------- Inputs handling -------------------------------------------------
   const { rl_borehole, shaft_rl, socket_start, rl_pile_top, water_table, critical_ratio, critical_length, pile_diameter } = inputs;
  
   // Collect soil depths and types dynamically
   const soilDepthTos = [];
   const soilTypes = [];
   const ID = [];
-  for (let i = 1; i <= rowAmount; i++) {
+  for (let i = 1; i <= soilRowAmount; i++) {
     soilDepthTos.push(Number(inputs[`soilDepthTo${i}`]) || 0);
     soilTypes.push(inputs[`soilType${i}`] || '');
     ID.push(Number(inputs[`ID${i}`]) || 0);
   }
 
   // Check required inputs for active layers
-  const requiredInputsFilled = soilDepthTos.slice(0, rowAmount).every(d => d) &&
-                               soilTypes.slice(0, rowAmount).every(t => t) &&
-                               ID.slice(0, rowAmount).every(id => id !== null && id !== undefined) && 
+  const requiredInputsFilled = soilDepthTos.slice(0, soilRowAmount).every(d => d) &&
+                               soilTypes.slice(0, soilRowAmount).every(t => t) &&
+                               ID.slice(0, soilRowAmount).every(id => id !== null && id !== undefined) && 
                                rl_borehole && shaft_rl  && socket_start &&
                                rl_pile_top && water_table && critical_ratio && 
                                critical_length && pile_diameter;
@@ -147,7 +148,7 @@ export async function soilTable(inputs, rowAmount = 6) {
     const keys = ['strataThickness','soilRLfrom','soilRLto','F','phi','alpha','cu','gamma','layerBase', 
                   'criticalLength', 'layerBaseCapped', 'midLayer', 'soilAdhesion', 'soilFriction'];
     keys.forEach(key => {
-      for (let i = 1; i <= rowAmount; i++) {
+      for (let i = 1; i <= soilRowAmount; i++) {
         emptyResult[`${key}${i}`] = '';
       }
     });
@@ -174,8 +175,10 @@ export async function soilTable(inputs, rowAmount = 6) {
   const soilFriction = [];
   let soilTotal = 0;
 
-  //Loop through rows 1 - rowAmount to calculate values
-  for (let i = 0; i < rowAmount; i++) {
+//------------------------------------- Inputs handling -------------------------------------------------
+
+  //Loop through rows 1 - soilRowAmount to calculate values
+  for (let i = 0; i < soilRowAmount; i++) {
     // Strata thickness
     strataThickness[i] = round(i === 0 ? soilDepthTos[i] - soilDepthFrom1 : soilDepthTos[i] - soilDepthTos[i-1]);
 
@@ -264,7 +267,7 @@ export async function soilTable(inputs, rowAmount = 6) {
   const keys = {strataThickness, soilRLfrom, soilRLto, F, phi, alpha, cu, gamma, layerBase, 
     criticalLength, layerBaseCapped, midLayer, soilAdhesion, soilFriction};
   Object.entries(keys).forEach(([key, arr]) => {
-    for (let i = 0; i < rowAmount; i++) {
+    for (let i = 0; i < soilRowAmount; i++) {
       result[`${key}${i+1}`] = arr[i];
     }
   });
@@ -272,7 +275,68 @@ export async function soilTable(inputs, rowAmount = 6) {
   return result;
 }
 
+//----------------------------------------- ROCK TABLE  -----------------------------------------------
+export async function rockTable(inputs, rockRowAmount = 3) {
+//------------------------------------- Inputs handling -------------------------------------------------
+// Declare individual inputs
+  const { rl_borehole, soilRLto } = inputs;
+ 
+  // Declare group inputs 
+  const rockDepthTos = [];
+  for (let i = 1; i <= rockRowAmount; i++) {
+    rockDepthTos.push(Number(inputs[`rockDepthTo${i}`]) || 0);
+  }
 
+  // Check required inputs for active layers
+  const requiredInputsFilled = rockDepthTos.slice(0, rockRowAmount).every(d => d) 
+
+  if (!requiredInputsFilled) {
+    const emptyResult = { rockDepthFrom1: '' };
+    const keys = ['rockDepthFrom',];
+    keys.forEach(key => {
+      for (let i = 1; i <= rockRowAmount; i++) {
+        emptyResult[`${key}${i}`] = '';
+      }
+    });
+    return emptyResult;
+  }
+
+  // Calculate rockDepthFrom1
+  let rockDepthFrom1 = rl_borehole - soilRLto;
+  console.log(`Calculated rockDepthFrom1: ${rockDepthFrom1} = rl_borehole ${rl_borehole} - soilRLFrom ${soilRLto}`);
+
+  // // Arrays to store results
+  // const strataThickness = [];
+  // const soilRLfrom = [];
+  // const soilRLto = [];
+  // const F = [];
+  // const phi = [];
+  // const alpha = [];
+  // const cu = [];
+  // const gamma = [];
+  // const layerBase = [];
+  // const criticalLength = [];
+  // const layerBaseCapped = [];
+  // const midLayer = [];
+  // const soilAdhesion = [];
+  // const soilFriction = [];
+  // let soilTotal = 0;
+
+
+// Convert arrays to object with numbered keys for backward compatibility
+  const result = { rockDepthFrom1 };
+  // const keys = {rockDepthFrom: rockDepthTos};
+  // Object.entries(keys).forEach(([key, arr]) => {
+  //   for (let i = 0; i < rockRowAmount; i++) {
+  //     result[`${key}${i+1}`] = arr[i];
+  //   }
+  // });
+
+  return result;
+
+//------------------------------------- Inputs handling -------------------------------------------------
+
+}
 
 // Helper: check if all required inputs are filled
 export function areInputsFilled(values) {
