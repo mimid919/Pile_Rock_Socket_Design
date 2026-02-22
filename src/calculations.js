@@ -341,7 +341,7 @@ export async function rockTable(inputs, rockRowAmount = 3) {
     rockV[i] = round(await lookup(rockClasses[i], 15));
   }
 
-  // Convert arrays to object with numbered keys for backward compatibility
+  // Convert arrays to object with numbered keys for backward compatibility 
   const result = { rockDepthFrom1 };
   const keys = {rockStrataThickness, rockRLfrom, rockRLto, Er, rockQbUlt, 
     rockQbe, rockTult, C, rockPhi, rockV};
