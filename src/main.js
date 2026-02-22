@@ -120,14 +120,14 @@ async function updateSoilTable() {
 async function updateRockTable() {
   inputIds.forEach(updateValueSpans);
 
-  //Calculating rock from value 1
-  const rowAmount = Number(document.getElementById('soilRowAmount')?.value) || 0;
+  //Calculating rockDepthFrom1 requires soilRLto of the last soil layer, so we need to get that first before calling rockTable
+  const soilRowAmount = Number(document.getElementById('soilRowAmount')?.value) || 0;
 
 
   const rockInputs = { 
     rl_borehole: Number(document.getElementById('rl_borehole')?.value) || 0,
     // For caclulating rockDepthFrom1
-    soilRLto: Number(document.getElementById(`soilRLto${rowAmount}`)?.textContent) || 0,
+    soilRLto: Number(document.getElementById(`soilRLto${soilRowAmount}`)?.textContent) || 0,
 
     rockDepthTo1: Number(document.getElementById('rockDepthTo1')?.value) || 0,
     rockDepthTo2: Number(document.getElementById('rockDepthTo2')?.value) || 0,

@@ -291,7 +291,7 @@ export async function rockTable(inputs, rockRowAmount = 3) {
   const requiredInputsFilled = rockDepthTos.slice(0, rockRowAmount).every(d => d) && rl_borehole && soilRLto;
   if (!requiredInputsFilled) {
     const emptyResult = { rockDepthFrom1: '' };
-    const keys = [rockStrataThickness];
+    const keys = ['rockStrataThickness', 'rockRLfrom','rockRLto',];
     keys.forEach(key => {
       for (let i = 1; i <= rockRowAmount; i++) {
         emptyResult[`${key}${i}`] = '';
@@ -308,17 +308,24 @@ export async function rockTable(inputs, rockRowAmount = 3) {
 
   // Initialise arrays to store results
   const rockStrataThickness = [];
+  const rockRLfrom = [];
+  const rockRLto = [];
 
   //Loop through rows 1 - rockRowAmount to calculate values
   for (let i = 0; i < rockRowAmount; i++) {
     // Strata thickness
     rockStrataThickness[i] = round(i === 0 ? rockDepthTos[i] - rockDepthFrom1 : rockDepthTos[i] - rockDepthTos[i-1]);
 
+    // RL from/to
+    rockRLfrom[i] = round(i === 0 ? rl_borehole - rockDepthFrom1 : rl_borehole - rockDepthTos[i-1]);
+    rockRLto[i] = round(rl_borehole - rockDepthTos[i]);
+
+
   }
 
   // Convert arrays to object with numbered keys for backward compatibility
   const result = { rockDepthFrom1 };
-  const keys = {rockStrataThickness};
+  const keys = {rockStrataThickness, rockRLfrom, rockRLto};
   Object.entries(keys).forEach(([key, arr]) => {
     for (let i = 0; i < rockRowAmount; i++) {
       result[`${key}${i+1}`] = arr[i];
