@@ -353,6 +353,16 @@ export async function rockTable(inputs, rockRowAmount = 3) {
   const rockLayer = [];
   const foundingRL = actual_socket - ULS;
 
+  //Array for totals
+  let sumProductEr = 0;
+  let sumProductTult = 0;
+  let sumProductC = 0;
+  let sumProductV = 0;
+  let sumProductPhi = 0;
+  let sumWeights = 0;
+
+
+
   //Loop through rows 1 - rockRowAmount to calculate values
   for (let i = 0; i < rockRowAmount; i++) {
     // Strata thickness
@@ -409,20 +419,35 @@ export async function rockTable(inputs, rockRowAmount = 3) {
     }else {
       rockLayer[i] = '';
     }
-    console.log(`Founding RL: ${foundingRL}, rockRLfrom: ${rockRLfrom[i]}, rockRLto: ${rockRLto[i]}, rockLayer: ${rockLayer[i]}`);
+
+    // Totals handling 
+    sumProductEr += Er[i] * Lcompression[i];
+    sumProductTult += rockTult[i] * Lcompression[i];
+    sumProductC += C[i] * Lcompression[i];
+    sumProductV += rockV[i] * Lcompression[i];
+    sumProductPhi += rockPhi[i] * Lcompression[i];
+    sumWeights += Lcompression[i];
+
 
   }
 
-  // Calculate totals
+  //------------ Calculate totals -----------------
+  let ErTotal;
+  if (sumWeights === 0) {
+    ErTotal = Er[0]; // or some default value, since we can't divide by zero
+  } else {
+    ErTotal = round(sumProductEr / sumWeights);
+  }
+    
 
-  const ErTotal = Er.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0)
-  const tultTotal = rockTult.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
-  const CTotal = C.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
-  const phiTotal = rockPhi.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
-  const VTotal = rockV.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
+  const tultTotal = round(sumProductTult / sumWeights);
+  const CTotal = round(sumProductC / sumWeights);
+  const phiTotal = round(sumProductPhi / sumWeights);
+  const VTotal = round(sumProductV / sumWeights);
+
   const LmaxTotal = Lmax.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
-  const rockAdhesionSettlementTotal = rockAdhesionSettlement.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
-  const LcompressionTotal = Lcompression.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
+  const rockAdhesionSettlementTotal = Math.trunc(rockAdhesionSettlement.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0));
+  const LcompressionTotal = sumWeights;
   const rockAdhesionTotal = Math.trunc(rockAdhesion.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0));
 
   // Convert arrays to object with numbered keys for backward compatibility e
