@@ -37,6 +37,7 @@ const inputIds = [
   'ID9',
   'ID10',
   'Lmax',
+  'ULS',
   'rockDepthTo1',
   'rockDepthTo2',
   'rockDepthTo3',
@@ -169,6 +170,8 @@ async function updateRockTable() {
     rockClass10: document.getElementById('rockClass10')?.value || '',
 
     Lmax_input: Number(document.getElementById('Lmax')?.value) || 0,
+
+    ULS: Number(document.getElementById('ULS')?.value) || 0,
 
     pile_diameter : Number(document.getElementById('pile_diameter')?.value) || 0,
     

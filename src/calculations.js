@@ -103,6 +103,14 @@ function calculateRockAdhesionSettlement(pile_diameter, rockTult, Lmax) {
   return (Math.PI * pile_diameter / 1000 * rockTult * Lmax);
 }
 
+//ROCK required socket length calculation
+function calculateRequiredRockSocketLength(rockStrataThickness, rockRLfrom, rockRLto, ULS, prevSum) {
+  if ((rockRLfrom - rockRLto) <= ULS) {
+    return rockStrataThickness;
+  } else { 
+    return Math.min(ULS -prevSum, rockStrataThickness);
+  }
+}
 
 
 //----------------------------------------- INITIAL TABLE -----------------------------------------------
@@ -292,7 +300,7 @@ export async function soilTable(inputs, soilRowAmount = 4) {
 export async function rockTable(inputs, rockRowAmount = 3) {
 //------------------------------------- Inputs handling -------------------------------------------------
 // Declare individual inputs
-  const { rl_borehole, soilRLto, Lmax_input, pile_diameter} = inputs;
+  const { rl_borehole, soilRLto, Lmax_input, ULS, pile_diameter} = inputs;
  
   // Declare group inputs 
   const rockDepthTos = [];
@@ -374,6 +382,15 @@ export async function rockTable(inputs, rockRowAmount = 3) {
       pile_diameter,
       rockTult[i],
       Lmax[i]
+    ));
+
+    //Lcompression
+    Lcompression[i] = round(calculateRequiredRockSocketLength(
+      rockStrataThickness[i],
+      rockRLfrom[0], // always use rockRLfrom1 for required socket length calculation as per Excel
+      rockRLto[i],
+      ULS,
+      i == 0 ? 0 : Lcompression.slice(0, i).reduce((acc, val) => acc + val, 0)
     ));
 
   }
