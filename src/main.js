@@ -13,6 +13,7 @@ const inputIds = [
   'socket_start',
   'uls',
   'sls',
+  'soilRowAmount',
   'settlement',
   'soilDepthTo1',
   'soilDepthTo2',
@@ -32,10 +33,7 @@ const inputIds = [
   'ID4',
   'ID5',
   'ID6',
-  'ID7',
-  'ID8',
-  'ID9',
-  'ID10',
+  'rockRowAmount',
   'Lmax',
   'ULS',
   'rockDepthTo1',
@@ -191,7 +189,7 @@ async function updateRockTable() {
 
 
 // Update soil table rows based on soilRowAmount
-async function updateSoilTableRows() {
+function updateSoilTableRows() {
   const soilRowAmount = Number(document.getElementById('soilRowAmount').value);
   const table = document.getElementById('soilTable');
   const rows = table.querySelectorAll('tbody tr');
@@ -234,7 +232,7 @@ document.getElementById('rockRowAmount').addEventListener('change', () => {
 
 
 updateSoilTableRows(); // Initial call to set correct rows on page load
-updateRockTableRows(); // Initial call to set correct rows on page load
+updateRockTableRows(); 
 
 
 

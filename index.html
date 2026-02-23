@@ -290,7 +290,7 @@
   </tr>
 </tfoot>
 </table>
-
+<br><br>
 
 <!--------------------- TABLE 3 ----------------------->
 <h1>Subsurface Conditions (Rock Only)</h1>
@@ -551,25 +551,46 @@
         <td class = "rockClass10_value"></td>      </tr>
 
   </tbody>
-<tfoot>
-  <tr>
-    <!-- Empty cells to align properly -->
-    <td colspan="6" style="text-align: right; font-weight: bold;">
-      Weighted Average, E<sub>r</sub>:
-    </td>
-    <td id="ErTotal"  style="font-weight: bold;"></td>
-    <td  colspan = "2"></td>
-    <td id = "tultTotal" colspan = "1" style="font-weight: bold;"></td>
-    <td id = "CTotal" colspan = "1" style="font-weight: bold;"></td>
-    <td id = "phiTotal" colspan = "1" style="font-weight: bold;"></td>
-    <td id = "VTotal" colspan = "1" style="font-weight: bold;"></td>
-    <td id = "LmaxTotal" colspan = "1" style="font-weight: bold;"></td>
-    <td id = "rockAdhesionSettlementTotal" colspan = "1" style="font-weight: bold;"></td>
-    <td id = "LcompressionTotal" colspan = "1" style="font-weight: bold;"></td>
-    <td id = "rockAdhesionTotal" colspan = "1" style="font-weight: bold;"></td>
-  </tr>
-</tfoot>
+  <tfoot>
+    <tr>
+      <!-- Empty cells to align properly -->
+      <td colspan="6" style="text-align: right; font-weight: bold;">
+        Weighted Average, E<sub>r</sub>:
+      </td>
+      <td id="ErTotal"  style="font-weight: bold;"></td>
+      <td  colspan = "2"></td>
+      <td id = "tultTotal" colspan = "1" style="font-weight: bold;"></td>
+      <td id = "CTotal" colspan = "1" style="font-weight: bold;"></td>
+      <td id = "phiTotal" colspan = "1" style="font-weight: bold;"></td>
+      <td id = "VTotal" colspan = "1" style="font-weight: bold;"></td>
+      <td id = "LmaxTotal" colspan = "1" style="font-weight: bold;"></td>
+      <td id = "rockAdhesionSettlementTotal" colspan = "1" style="font-weight: bold;"></td>
+      <td id = "LcompressionTotal" colspan = "1" style="font-weight: bold;"></td>
+      <td id = "rockAdhesionTotal" colspan = "1" style="font-weight: bold;"></td>
+    </tr>
+  </tfoot>
 </table>
+<br><br>
+
+
+<!--------------------- TABLE 4 ----------------------->
+<h1>Ultimate end bearing</h1>
+<table class = "tableSmall" id = "endBearingTable" border="1">
+  <thead>
+    <tr>
+      <th>Class</th>
+      <th>E<sub>b</sub>, (MPa)</th>
+      <th>q<sub>b ult</sub>, (MPa)</th>
+      <th>q<sub>be</sub>, (MPa)</th>
+      <th>vb, (MPa)</th>
+      <th>Ult end bearing, (kN)</th>
+    </tr>
+  </thead>
+  <tbody id = "endBearingTableBody">
+    <!-- Rows will be dynamically added here -->
+  </tbody>
+</table>
+<!-- SCRIPT -->
 <script>
   // Global list of soil/rock classes
   const soilClasses = [
@@ -624,7 +645,7 @@
     td.innerHTML = ""; // clear the input
     td.appendChild(createSoilSelect(`rockClass${i}`));
   }
-  </script>
+</script>
 
 </body>
 </html>
