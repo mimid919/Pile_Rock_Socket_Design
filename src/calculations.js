@@ -98,6 +98,11 @@ function calculateRockSocketLength(rockStrataThickness, rockRLfrom, rockRLto, Lm
   }
 }
 
+//ROCK adhesion settlement calculation
+function calculateRockAdhesionSettlement(pile_diameter, rockTult, Lmax) {
+  return (Math.PI * pile_diameter / 1000 * rockTult * Lmax);
+}
+
 
 
 //----------------------------------------- INITIAL TABLE -----------------------------------------------
@@ -287,7 +292,7 @@ export async function soilTable(inputs, soilRowAmount = 4) {
 export async function rockTable(inputs, rockRowAmount = 3) {
 //------------------------------------- Inputs handling -------------------------------------------------
 // Declare individual inputs
-  const { rl_borehole, soilRLto, Lmax_input,} = inputs;
+  const { rl_borehole, soilRLto, Lmax_input, pile_diameter} = inputs;
  
   // Declare group inputs 
   const rockDepthTos = [];
@@ -299,10 +304,13 @@ export async function rockTable(inputs, rockRowAmount = 3) {
 
   // If required inputs are filled in return empty box
   const requiredInputsFilled = rockDepthTos.slice(0, rockRowAmount).every(d => d) &&
-                                rockClasses.slice(0, rockRowAmount).every(d => d)&& rl_borehole && soilRLto;
+                                rockClasses.slice(0, rockRowAmount).every(d => d)&&
+                                 rl_borehole && soilRLto && pile_diameter;
   if (!requiredInputsFilled) {
     const emptyResult = { rockDepthFrom1: '' }; // outputs
-    const keys = ['rockStrataThickness', 'rockRLfrom','rockRLto', 'Er', 'rockQbUlt', 'rockQbe', 'rockTult', 'C', 'rockPhi', 'rockV'];
+    const keys = ['rockStrataThickness', 'rockRLfrom','rockRLto', 'Er', 'rockQbUlt', 'rockQbe', 'rockTult', 'C', 'rockPhi', 'rockV',
+      'Lmax', 'rockAdhesionSettlement', 'Lcompression', 'rockAdhesion', 'rockLayer', 'rockClassOutput'
+    ];
     keys.forEach(key => {
       for (let i = 1; i <= rockRowAmount; i++) {
         emptyResult[`${key}${i}`] = '';
@@ -313,7 +321,6 @@ export async function rockTable(inputs, rockRowAmount = 3) {
 
   // Calculate rockDepthFrom1
   let rockDepthFrom1 = rl_borehole - soilRLto;
-  console.log(`Calculated rockDepthFrom1: ${rockDepthFrom1} = rl_borehole ${rl_borehole} - soilRLFrom ${soilRLto}`);
 
 //------------------------------------- Inputs handling END -------------------------------------------------
 
@@ -361,14 +368,20 @@ export async function rockTable(inputs, rockRowAmount = 3) {
       Lmax_input,
       i == 0 ? 0 : Lmax.slice(0, i).reduce((acc, val) => acc + val, 0)
     ));
-          console.log(`Calculated Lmax for row ${i+1}: ${Lmax[i]} using rockStrataThickness ${rockStrataThickness[i]}, rockRLfrom ${rockRLfrom[i]}, rockRLto ${rockRLto[i]}, Lmax_input ${Lmax_input}, prevSum ${i == 0 ? 0 : Lmax.slice(0, i).reduce((acc, val) => acc + val, 0)}`)
+
+    //Rock adhesion settlement
+    rockAdhesionSettlement[i] = round(calculateRockAdhesionSettlement(
+      pile_diameter,
+      rockTult[i],
+      Lmax[i]
+    ));
 
   }
 
   // Convert arrays to object with numbered keys for backward compatibility e
   const result = { rockDepthFrom1 };
   const keys = {rockStrataThickness, rockRLfrom, rockRLto, Er, rockQbUlt, 
-    rockQbe, rockTult, C, rockPhi, rockV, Lmax};
+    rockQbe, rockTult, C, rockPhi, rockV, Lmax, rockAdhesionSettlement, Lcompression, rockAdhesion, rockLayer, rockClassOutput};
   Object.entries(keys).forEach(([key, arr]) => {
     for (let i = 0; i < rockRowAmount; i++) {
       result[`${key}${i+1}`] = arr[i];

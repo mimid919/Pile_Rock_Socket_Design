@@ -169,6 +169,8 @@ async function updateRockTable() {
     rockClass10: document.getElementById('rockClass10')?.value || '',
 
     Lmax_input: Number(document.getElementById('Lmax')?.value) || 0,
+
+    pile_diameter : Number(document.getElementById('pile_diameter')?.value) || 0,
     
     
   };
