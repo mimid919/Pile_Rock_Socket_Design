@@ -413,8 +413,20 @@ export async function rockTable(inputs, rockRowAmount = 3) {
 
   }
 
+  // Calculate totals
+
+  const ErTotal = Er.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0)
+  const tultTotal = rockTult.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
+  const CTotal = C.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
+  const phiTotal = rockPhi.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
+  const VTotal = rockV.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
+  const LmaxTotal = Lmax.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
+  const rockAdhesionSettlementTotal = rockAdhesionSettlement.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
+  const LcompressionTotal = Lcompression.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
+  const rockAdhesionTotal = rockAdhesion.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
+
   // Convert arrays to object with numbered keys for backward compatibility e
-  const result = { rockDepthFrom1 };
+  const result = { rockDepthFrom1, ErTotal, tultTotal, CTotal, phiTotal, VTotal, LmaxTotal, rockAdhesionSettlementTotal, LcompressionTotal, rockAdhesionTotal };
   const keys = {rockStrataThickness, rockRLfrom, rockRLto, Er, rockQbUlt, 
     rockQbe, rockTult, C, rockPhi, rockV, Lmax, rockAdhesionSettlement, Lcompression, rockAdhesion, rockLayer};
   Object.entries(keys).forEach(([key, arr]) => {
