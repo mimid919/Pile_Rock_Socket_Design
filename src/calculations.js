@@ -423,7 +423,7 @@ export async function rockTable(inputs, rockRowAmount = 3) {
   const LmaxTotal = Lmax.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
   const rockAdhesionSettlementTotal = rockAdhesionSettlement.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
   const LcompressionTotal = Lcompression.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
-  const rockAdhesionTotal = rockAdhesion.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0);
+  const rockAdhesionTotal = Math.trunc(rockAdhesion.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0));
 
   // Convert arrays to object with numbered keys for backward compatibility e
   const result = { rockDepthFrom1, ErTotal, tultTotal, CTotal, phiTotal, VTotal, LmaxTotal, rockAdhesionSettlementTotal, LcompressionTotal, rockAdhesionTotal };
