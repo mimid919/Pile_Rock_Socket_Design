@@ -194,6 +194,8 @@ async function updateEndBearingTable() {
   inputIds.forEach(updateValueSpans);
 
   const endBearingInputs = { 
+    endBearingClass: document.getElementById('endBearingClass')?.textContent || '',
+    pile_diameter: Number(document.getElementById('pile_diameter')?.value) || 0,
     
   };
 

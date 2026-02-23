@@ -476,4 +476,36 @@ export async function rockTable(inputs, rockRowAmount = 3) {
 //----------------------------------------- ULTIMATE END BEARING TABLE  -----------------------------------------------
 export async function endBearingTable(inputs) {
 
+  const { endBearingClass, pile_diameter } = inputs;
+
+  // Return empty if required inputs missing
+  if (!endBearingClass || !pile_diameter) {
+    return {
+      endBearingEr: '',
+      endBearingQbUlt: '',
+      endBearingQbe: '',
+      endBearingVb: '',
+      endBearingUlt: ''
+    };
+  }
+
+  const endBearingEr = round(await lookup(endBearingClass, 16));
+  const endBearingQbUlt = round(await lookup(endBearingClass, 17));
+  const endBearingQbe = round(await lookup(endBearingClass, 18));
+  const endBearingVb = round(await lookup(endBearingClass, 15));
+
+  const endBearingUlt = Math.trunc(
+    Math.PI *
+    (((pile_diameter / 1000) / 2) ** 2) *
+    endBearingQbUlt *
+    1000
+  );
+
+  return {
+    endBearingEr,
+    endBearingQbUlt,
+    endBearingQbe,
+    endBearingVb,
+    endBearingUlt
+  };
 }
