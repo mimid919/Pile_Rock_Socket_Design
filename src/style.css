@@ -33,7 +33,7 @@ table td {
 }
 
 /* Input fields inside tables (yellow) */
-table input {
+input, select {
   background-color: #ffff8f; /* yellow input */
   width: 60px;
   padding: 2px;
