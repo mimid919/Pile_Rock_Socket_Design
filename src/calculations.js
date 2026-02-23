@@ -320,7 +320,7 @@ export async function rockTable(inputs, rockRowAmount = 3) {
   if (!requiredInputsFilled) {
     const emptyResult = { rockDepthFrom1: '' }; // outputs
     const keys = ['rockStrataThickness', 'rockRLfrom','rockRLto', 'Er', 'rockQbUlt', 'rockQbe', 'rockTult', 'C', 'rockPhi', 'rockV',
-      'Lmax', 'rockAdhesionSettlement', 'Lcompression', 'rockAdhesion', 'rockLayer', 'rockClassOutput'
+      'Lmax', 'rockAdhesionSettlement', 'Lcompression', 'rockAdhesion', 'rockLayer'
     ];
     keys.forEach(key => {
       for (let i = 1; i <= rockRowAmount; i++) {
@@ -351,7 +351,6 @@ export async function rockTable(inputs, rockRowAmount = 3) {
   const Lcompression = [];
   const rockAdhesion = [];
   const rockLayer = [];
-  const rockClassOutput = [];
   const foundingRL = actual_socket - ULS;
 
   //Loop through rows 1 - rockRowAmount to calculate values
@@ -417,7 +416,7 @@ export async function rockTable(inputs, rockRowAmount = 3) {
   // Convert arrays to object with numbered keys for backward compatibility e
   const result = { rockDepthFrom1 };
   const keys = {rockStrataThickness, rockRLfrom, rockRLto, Er, rockQbUlt, 
-    rockQbe, rockTult, C, rockPhi, rockV, Lmax, rockAdhesionSettlement, Lcompression, rockAdhesion, rockLayer, rockClassOutput};
+    rockQbe, rockTult, C, rockPhi, rockV, Lmax, rockAdhesionSettlement, Lcompression, rockAdhesion, rockLayer};
   Object.entries(keys).forEach(([key, arr]) => {
     for (let i = 0; i < rockRowAmount; i++) {
       result[`${key}${i+1}`] = arr[i];

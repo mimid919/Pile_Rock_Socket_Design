@@ -296,10 +296,11 @@
 <h1>Subsurface Conditions (Rock Only)</h1>
 <label for = "Lmax">Length of pile required if all the load were taken in side shear, L<sub>max</sub> </label>
 <input type="number" id="Lmax" value = "5"/>
-<br>
+<br><br>
 <label for = "ULS">Input pile socket length for compression ULS</label>
 <input type="number" id="ULS" value = "4.2"/>
-<br><label for="rockRowAmount">Number of Rows:</label>
+<br><br>
+<label for="rockRowAmount">Number of Rows:</label>
 <select id="rockRowAmount">
   <option value="1">1</option>
   <option value="2">2</option>
@@ -311,7 +312,7 @@
   <option value="8">8</option>
   <option value="9">9</option>
   <option value="10">10</option>
-</select>
+</select> <br><br>
 <table id = "rockTable" border="1">
   <thead>
     <tr>
@@ -362,7 +363,7 @@
         <td id = "Lcompression1"></td>
         <td id = "rockAdhesion1"></td>
         <td id = "rockLayer1"></td>
-        <td id = "rockClass1_value"></td>
+        <td class = "rockClass1_value"></td>
       </tr>
       <tr>
         <td class="rockDepthTo1_value" ></td>
@@ -383,7 +384,7 @@
         <td id = "Lcompression2"></td>
         <td id = "rockAdhesion2"></td>
         <td id = "rockLayer2"></td>
-        <td id = "rockClass2_value"></td>
+        <td class = "rockClass2_value"></td>
       </tr>
       <tr>
         <td class="rockDepthTo2_value" ></td>
@@ -404,7 +405,7 @@
         <td id = "Lcompression3"></td>
         <td id = "rockAdhesion3"></td>
         <td id = "rockLayer3"></td>
-        <td id = "rockClassOutput3"></td>
+        <td class = "rockClass3_value"></td>
       </tr>
       <tr>
         <td class="rockDepthTo3_value" ></td>
@@ -425,7 +426,7 @@
         <td id = "Lcompression4"></td>
         <td id = "rockAdhesion4"></td>
         <td id = "rockLayer4"></td>
-        <td id = "rockClassOutput4"></td>      </tr>
+        <td class = "rockClass4_value"></td>      </tr>
       <tr>
         <td class="rockDepthTo4_value" ></td>
         <td><input type="number" id="rockDepthTo5" /></td>
@@ -445,7 +446,7 @@
         <td id = "Lcompression5"></td>
         <td id = "rockAdhesion5"></td>
         <td id = "rockLayer5"></td>
-        <td id = "rockClassOutput5"></td>
+        <td class = "rockClass5_value"></td>
       </tr>
       <tr>
         <td class="rockDepthTo5_value" ></td>
@@ -466,7 +467,7 @@
         <td id = "Lcompression6"></td>
         <td id = "rockAdhesion6"></td>
         <td id = "rockLayer6"></td>
-        <td id = "rockClassOutput6"></td>      </tr>   
+        <td class = "rockClass6_value"></td>      </tr>   
       <tr>
         <td class="rockDepthTo6_value" ></td>
         <td><input type="number" id="rockDepthTo7" /></td>
@@ -486,7 +487,7 @@
         <td id = "Lcompression7"></td>
         <td id = "rockAdhesion7"></td>
         <td id = "rockLayer7"></td>
-        <td id = "rockClassOutput7"></td>      </tr>
+        <td class = "rockClass7_value"></td>      </tr>
       <tr>
         <td class="rockDepthTo7_value" ></td>
         <td><input type="number" id="rockDepthTo8" /></td>
@@ -506,13 +507,14 @@
         <td id = "Lcompression8"></td>
         <td id = "rockAdhesion8"></td>
         <td id = "rockLayer8"></td>
-        <td id = "rockClassOutput8"></td>      </tr>
+        <td class = "rockClass8_value"></td>      </tr>
       <tr>
         <td class="rockDepthTo8_value" ></td>
         <td><input type="number" id="rockDepthTo9"/></td>
         <td id = "rockStrataThickness9"></td>
         <td id="rockRLfrom9" ></td>
         <td id="rockRLto9" ></td>
+        <td><input type="text" id="rockClass9" /></td>
         <td id = "Er9"></td>
         <td id = "rockQbUlt9"></td>
         <td id = "rockQbe9"></td>
@@ -525,12 +527,15 @@
         <td id = "Lcompression9"></td>
         <td id = "rockAdhesion9"></td>
         <td id = "rockLayer9"></td>
-        <td id = "rockClassOutput9"></td>      <tr>
+        <td class = "rockClass9_value"></td>    
+      </tr>  
+      <tr>
         <td class="rockDepthTo9_value" ></td>
         <td><input type="number" id="rockDepthTo10" /></td>
         <td id = "rockStrataThickness10"></td>
         <td id="rockRLfrom10" ></td>
         <td id="rockRLto10" ></td>
+        <td><input type="text" id="rockClass10" /></td>
         <td id = "Er10"></td>
         <td id = "rockQbUlt10"></td>
         <td id = "rockQbe10"></td>
@@ -543,7 +548,7 @@
         <td id = "Lcompression10"></td>
         <td id = "rockAdhesion10"></td>
         <td id = "rockLayer10"></td>
-        <td id = "rockClassOutput10"></td>      </tr>
+        <td class = "rockClass10_value"></td>      </tr>
 
   </tbody>
 </table>
