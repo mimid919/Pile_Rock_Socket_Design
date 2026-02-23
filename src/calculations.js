@@ -1,5 +1,12 @@
 import  { lookup }from'./Parameters.js';
 
+
+{
+// Helper: check if all required inputs are filled
+function areInputsFilled(values) {
+  return Object.values(values).every(val => val !== null && val !== undefined && val !== '');
+}
+
 //helper function 
 const round = (num, dp = 2) =>
   Math.round(num * 10**dp) / 10**dp;
@@ -111,8 +118,7 @@ function calculateRequiredRockSocketLength(rockStrataThickness, rockRLfrom, rock
     return Math.min(ULS -prevSum, rockStrataThickness);
   }
 }
-
-//ROCL
+}
 
 
 //----------------------------------------- INITIAL TABLE -----------------------------------------------
@@ -464,7 +470,7 @@ export async function rockTable(inputs, rockRowAmount = 3) {
 
 }
 
-// Helper: check if all required inputs are filled
-export function areInputsFilled(values) {
-  return Object.values(values).every(val => val !== null && val !== undefined && val !== '');
+//----------------------------------------- ULTIMATE END BEARING TABLE  -----------------------------------------------
+export async function endBearingTable(inputs) {
+
 }

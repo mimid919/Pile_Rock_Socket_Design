@@ -577,7 +577,7 @@
 <h1>Ultimate end bearing</h1>
 <table class = "tableSmall" id = "endBearingTable" border="1">
   <thead>
-    <tr>
+    <tr> <!-- HEADERS -->
       <th>Class</th>
       <th>E<sub>b</sub>, (MPa)</th>
       <th>q<sub>b ult</sub>, (MPa)</th>
@@ -586,10 +586,18 @@
       <th>Ult end bearing, (kN)</th>
     </tr>
   </thead>
-  <tbody id = "endBearingTableBody">
-    <!-- Rows will be dynamically added here -->
+  <tbody>
+    <tr>
+      <td id = "endBearingClass"></td>
+      <td id = "endBearingEr"></td>
+      <td id = "endBearingQbUlt"></td>
+      <td id = "endBearingQbe"></td>
+      <td id = "endBearingVb"></td>
+      <td id = "endBearingUlt"></td>
+    </tr>
   </tbody>
 </table>
+
 <!-- SCRIPT -->
 <script>
   // Global list of soil/rock classes

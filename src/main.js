@@ -1,4 +1,4 @@
-import { initialInputsTable, soilTable, rockTable } from './calculations.js';
+import { initialInputsTable, soilTable, rockTable, endBearingTable } from './calculations.js';
 import { setMultipleValues } from './tableHandler.js';
 
 // All inputs you want to update to using "_value" and add event listeners
@@ -187,6 +187,20 @@ async function updateRockTable() {
 
 }
 
+//---------------------------- ULTIMATE END BEARING TABLE ---------------------------
+async function updateEndBearingTable() {
+  // Update spans for all inputs first
+  inputIds.forEach(updateValueSpans);
+
+  const endBearingInputs = { 
+    
+  };
+
+  const derivedEndBearingTable = await endBearingTable(endBearingInputs);
+
+  setMultipleValues({...derivedEndBearingTable});
+
+}
 
 // Update soil table rows based on soilRowAmount
 function updateSoilTableRows() {
@@ -231,11 +245,10 @@ document.getElementById('rockRowAmount').addEventListener('change', () => {
 });
 
 
+
+
 updateSoilTableRows(); // Initial call to set correct rows on page load
 updateRockTableRows(); 
-
-
-
 
 // Attach listeners to all inputs
 document.addEventListener('DOMContentLoaded', async () => {
@@ -247,10 +260,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       updateInitialTable();
       await updateSoilTable();
       await updateRockTable();
+      await updateEndBearingTable();
     });
   });
 
   // Initial call to populate _values and derived calculations
   updateInitialTable();
   await updateSoilTable();
-  await updateRockTable();});
+  await updateRockTable();
+  await updateEndBearingTable();});
+
