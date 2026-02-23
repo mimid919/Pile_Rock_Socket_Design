@@ -30,6 +30,13 @@ const inputIds = [
   'ID2',
   'ID3',
   'ID4',
+  'ID5',
+  'ID6',
+  'ID7',
+  'ID8',
+  'ID9',
+  'ID10',
+  'Lmax',
   'rockDepthTo1',
   'rockDepthTo2',
   'rockDepthTo3',
@@ -160,6 +167,8 @@ async function updateRockTable() {
     rockClass8: document.getElementById('rockClass8')?.value || '',
     rockClass9: document.getElementById('rockClass9')?.value || '',
     rockClass10: document.getElementById('rockClass10')?.value || '',
+
+    Lmax_input: Number(document.getElementById('Lmax')?.value) || 0,
     
     
   };

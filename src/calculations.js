@@ -4,7 +4,7 @@ import  { lookup }from'./Parameters.js';
 const round = (num, dp = 2) =>
   Math.round(num * 10**dp) / 10**dp;
 
-//Layer base calculation
+//SOIL Layer base calculation
 function calculateLayerBase(water_table, RLto, RLfrom, gamma, strataThickness, LayerBasePrevious) {
 
   if (water_table < RLto) {
@@ -19,7 +19,7 @@ function calculateLayerBase(water_table, RLto, RLfrom, gamma, strataThickness, L
 
 }
 
-//Critical length calculation
+//SOIL Critical length calculation
 function calculateCriticalLength(rl_pile_top, RLto, critical_length, strataThickness, prevSum) {
     let result;
 
@@ -36,7 +36,7 @@ function calculateCriticalLength(rl_pile_top, RLto, critical_length, strataThick
     return result;
 }
 
-//Layer base capped calculation
+//SOIL Layer base capped calculation
 function calculateLayerBaseCapped(water_table, RLto, criticalLengthPrev, gamma, criticalLength, RLfrom) {
     let result;
 
@@ -55,7 +55,7 @@ function calculateLayerBaseCapped(water_table, RLto, criticalLengthPrev, gamma, 
     return result;
 }
 
-//Mid layer capped calculation
+//SOIL Mid layer capped calculation
 function calculateMidLayer(critical_ratio, soilDepthFrom, layerBaseCappedPrev, layerBaseCapped) {
     let result;
 
@@ -69,7 +69,7 @@ function calculateMidLayer(critical_ratio, soilDepthFrom, layerBaseCappedPrev, l
 
 }
 
-// Soil ult shaft adhesion calculation
+// SOIL ult shaft adhesion calculation
 function calculateSoilAdhesion(ID, alpha, cu, F, midLayer) {
   let result;
 
@@ -84,12 +84,19 @@ function calculateSoilAdhesion(ID, alpha, cu, F, midLayer) {
   return result;
 }
 
-//Soil ult shaft riction calculation
+//SOIL ult shaft riction calculation
 function calculateSoilFriction(pile_diameter, strataThickness, soilAdhesion) {
   return Math.PI * pile_diameter / 1000 * strataThickness * soilAdhesion;
 }
 
-
+//ROCK socket length calculation
+function calculateRockSocketLength(rockStrataThickness, rockRLfrom, rockRLto, Lmax, prevSum) {
+  if ((rockRLfrom - rockRLto) <= Lmax) {
+    return rockStrataThickness;
+  } else { 
+    return Math.min(Lmax -prevSum, rockStrataThickness);
+  }
+}
 
 
 
@@ -280,7 +287,7 @@ export async function soilTable(inputs, soilRowAmount = 4) {
 export async function rockTable(inputs, rockRowAmount = 3) {
 //------------------------------------- Inputs handling -------------------------------------------------
 // Declare individual inputs
-  const { rl_borehole, soilRLto} = inputs;
+  const { rl_borehole, soilRLto, Lmax_input,} = inputs;
  
   // Declare group inputs 
   const rockDepthTos = [];
@@ -321,6 +328,12 @@ export async function rockTable(inputs, rockRowAmount = 3) {
   const C = [];
   const rockPhi = [];
   const rockV = [];
+  const Lmax = [];
+  const rockAdhesionSettlement = [];
+  const Lcompression = [];
+  const rockAdhesion = [];
+  const rockLayer = [];
+  const rockClassOutput = [];
 
   //Loop through rows 1 - rockRowAmount to calculate values
   for (let i = 0; i < rockRowAmount; i++) {
@@ -339,12 +352,23 @@ export async function rockTable(inputs, rockRowAmount = 3) {
     C[i] = round(await lookup(rockClasses[i], 5));
     rockPhi[i] = round(await lookup(rockClasses[i], 6));
     rockV[i] = round(await lookup(rockClasses[i], 15));
+
+    //Lmax
+    Lmax[i] = round(calculateRockSocketLength(
+      rockStrataThickness[i],
+      rockRLfrom[0], // always use rockRLfrom1 for Lmax calculation as per Excel],
+      rockRLto[i],
+      Lmax_input,
+      i == 0 ? 0 : Lmax.slice(0, i).reduce((acc, val) => acc + val, 0)
+    ));
+          console.log(`Calculated Lmax for row ${i+1}: ${Lmax[i]} using rockStrataThickness ${rockStrataThickness[i]}, rockRLfrom ${rockRLfrom[i]}, rockRLto ${rockRLto[i]}, Lmax_input ${Lmax_input}, prevSum ${i == 0 ? 0 : Lmax.slice(0, i).reduce((acc, val) => acc + val, 0)}`)
+
   }
 
-  // Convert arrays to object with numbered keys for backward compatibility 
+  // Convert arrays to object with numbered keys for backward compatibility e
   const result = { rockDepthFrom1 };
   const keys = {rockStrataThickness, rockRLfrom, rockRLto, Er, rockQbUlt, 
-    rockQbe, rockTult, C, rockPhi, rockV};
+    rockQbe, rockTult, C, rockPhi, rockV, Lmax};
   Object.entries(keys).forEach(([key, arr]) => {
     for (let i = 0; i < rockRowAmount; i++) {
       result[`${key}${i+1}`] = arr[i];

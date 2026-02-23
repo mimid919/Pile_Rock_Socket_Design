@@ -294,6 +294,9 @@
 
 <!--------------------- TABLE 3 ----------------------->
 <h1>Subsurface Conditions (Rock Only)</h1>
+<label for = "Lmax">Length of pile required if all the load were taken in side shear, L<sub>max</sub> </label>
+<input type="number" id="Lmax" value = "5"/>
+<br>
 <label for="rockRowAmount">Number of Rows:</label>
 <select id="rockRowAmount">
   <option value="1">1</option>
@@ -595,7 +598,8 @@
     const td = document.getElementById(`rockClass${i}`).parentNode; // get the parent td
     td.innerHTML = ""; // clear the input
     td.appendChild(createSoilSelect(`rockClass${i}`));
-  }</script>
+  }
+  </script>
 
 </body>
 </html>
