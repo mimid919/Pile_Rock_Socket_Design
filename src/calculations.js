@@ -112,6 +112,8 @@ function calculateRequiredRockSocketLength(rockStrataThickness, rockRLfrom, rock
   }
 }
 
+//ROCL
+
 
 //----------------------------------------- INITIAL TABLE -----------------------------------------------
 export function initialInputsTable(inputs) {
@@ -300,7 +302,8 @@ export async function soilTable(inputs, soilRowAmount = 4) {
 export async function rockTable(inputs, rockRowAmount = 3) {
 //------------------------------------- Inputs handling -------------------------------------------------
 // Declare individual inputs
-  const { rl_borehole, soilRLto, Lmax_input, ULS, pile_diameter} = inputs;
+  const { rl_borehole, soilRLto, Lmax_input, ULS, pile_diameter, actual_socket} = inputs;
+  console.log(`actual socket input: ${actual_socket}`);
  
   // Declare group inputs 
   const rockDepthTos = [];
@@ -349,6 +352,7 @@ export async function rockTable(inputs, rockRowAmount = 3) {
   const rockAdhesion = [];
   const rockLayer = [];
   const rockClassOutput = [];
+  const foundingRL = actual_socket - ULS;
 
   //Loop through rows 1 - rockRowAmount to calculate values
   for (let i = 0; i < rockRowAmount; i++) {
@@ -399,6 +403,14 @@ export async function rockTable(inputs, rockRowAmount = 3) {
       rockTult[i],
       Lcompression[i]
     ));
+
+    //Rock layer
+    if ((foundingRL <= rockRLfrom[i]) && (foundingRL > rockRLto[i])) {
+      rockLayer[i] = 'Bearing layer';
+    }else {
+      rockLayer[i] = '';
+    }
+    console.log(`Founding RL: ${foundingRL}, rockRLfrom: ${rockRLfrom[i]}, rockRLto: ${rockRLto[i]}, rockLayer: ${rockLayer[i]}`);
 
   }
 

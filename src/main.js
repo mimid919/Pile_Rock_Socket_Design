@@ -174,6 +174,8 @@ async function updateRockTable() {
     ULS: Number(document.getElementById('ULS')?.value) || 0,
 
     pile_diameter : Number(document.getElementById('pile_diameter')?.value) || 0,
+
+    actual_socket: Number(document.getElementById('actual_socket')?.textContent) || 0,
     
     
   };
