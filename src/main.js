@@ -85,9 +85,10 @@ function updateInitialTable() {
 
   // 4️⃣ Update DOM or table with derived values
   setMultipleValues({...derivedInitial,});
+  console.log("Initial derived:", derivedInitial);
+
 
 }
-
 //---------------------------- SOIL TABLE ---------------------------
 async function updateSoilTable() {
   inputIds.forEach(updateValueSpans);
@@ -247,11 +248,13 @@ document.getElementById('rockRowAmount').addEventListener('change', () => {
 
 
 
-updateSoilTableRows(); // Initial call to set correct rows on page load
-updateRockTableRows(); 
-
 // Attach listeners to all inputs
 document.addEventListener('DOMContentLoaded', async () => {
+
+  updateSoilTableRows(); // Initial call to set correct rows on page load
+updateRockTableRows(); 
+
+
   inputIds.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;

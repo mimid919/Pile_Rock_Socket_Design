@@ -1,8 +1,6 @@
 import  { lookup }from'./Parameters.js';
 
-
-{
-// Helper: check if all required inputs are filled
+//--------------------------------- FUNCTIONS -----------------------------------
 function areInputsFilled(values) {
   return Object.values(values).every(val => val !== null && val !== undefined && val !== '');
 }
@@ -118,7 +116,8 @@ function calculateRequiredRockSocketLength(rockStrataThickness, rockRLfrom, rock
     return Math.min(ULS -prevSum, rockStrataThickness);
   }
 }
-}
+
+
 
 
 //----------------------------------------- INITIAL TABLE -----------------------------------------------
@@ -358,6 +357,8 @@ export async function rockTable(inputs, rockRowAmount = 3) {
   const rockAdhesion = [];
   const rockLayer = [];
   const foundingRL = actual_socket - ULS;
+  // Ultimate end bearing table 
+  let endBearingClass;
 
   //Array for totals
   let sumProductEr = 0;
@@ -422,6 +423,7 @@ export async function rockTable(inputs, rockRowAmount = 3) {
     //Rock layer
     if ((foundingRL <= rockRLfrom[i]) && (foundingRL > rockRLto[i])) {
       rockLayer[i] = 'Bearing layer';
+      endBearingClass = rockClasses[i];
     }else {
       rockLayer[i] = '';
     }
@@ -457,7 +459,8 @@ export async function rockTable(inputs, rockRowAmount = 3) {
   const rockAdhesionTotal = Math.trunc(rockAdhesion.slice(0, rockRowAmount).reduce((acc, val) => acc + val, 0));
 
   // Convert arrays to object with numbered keys for backward compatibility e
-  const result = { rockDepthFrom1, ErTotal, tultTotal, CTotal, phiTotal, VTotal, LmaxTotal, rockAdhesionSettlementTotal, LcompressionTotal, rockAdhesionTotal };
+  const result = { rockDepthFrom1, ErTotal, tultTotal, CTotal, phiTotal, VTotal, LmaxTotal, 
+                    rockAdhesionSettlementTotal, LcompressionTotal, rockAdhesionTotal, endBearingClass };
   const keys = {rockStrataThickness, rockRLfrom, rockRLto, Er, rockQbUlt, 
     rockQbe, rockTult, C, rockPhi, rockV, Lmax, rockAdhesionSettlement, Lcompression, rockAdhesion, rockLayer};
   Object.entries(keys).forEach(([key, arr]) => {
