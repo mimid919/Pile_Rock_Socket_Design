@@ -99,8 +99,8 @@ function calculateRockSocketLength(rockStrataThickness, rockRLfrom, rockRLto, Lm
 }
 
 //ROCK adhesion settlement calculation
-function calculateRockAdhesionSettlement(pile_diameter, rockTult, Lmax) {
-  return (Math.PI * pile_diameter / 1000 * rockTult * Lmax);
+function calculateRockAdhesionSettlement(pile_diameter, rockTult, LmaxORLcompression) {
+  return (Math.PI * pile_diameter / 1000 * rockTult * LmaxORLcompression);
 }
 
 //ROCK required socket length calculation
@@ -391,6 +391,13 @@ export async function rockTable(inputs, rockRowAmount = 3) {
       rockRLto[i],
       ULS,
       i == 0 ? 0 : Lcompression.slice(0, i).reduce((acc, val) => acc + val, 0)
+    ));
+
+    //Rock adhesion
+    rockAdhesion[i] = round(calculateRockAdhesionSettlement(
+      pile_diameter,
+      rockTult[i],
+      Lcompression[i]
     ));
 
   }
