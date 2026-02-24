@@ -1,4 +1,4 @@
-import { initialInputsTable, soilTable, rockTable, endBearingTable } from './calculations.js';
+import { initialInputsTable, soilTable, rockTable, endBearingTable, socketLengthDesign } from './calculations.js';
 import { setMultipleValues } from './tableHandler.js';
 
 // All inputs you want to update to using "_value" and add event listeners
@@ -205,6 +205,24 @@ async function updateEndBearingTable() {
 
 }
 
+//---------------------------- SOCKET LENGTH DESIGN SECTION ---------------------------
+function updateSocketLengthDesign() {
+  inputIds.forEach(updateValueSpans);
+
+  const socketLengthDesignInputs = {
+    soilTotal: Number(document.getElementById('soilTotal')?.textContent) || 0,
+    rockAdhesionTotal: Number(document.getElementById('rockAdhesionTotal')?.textContent) || 0,
+    endBearingUlt: Number(document.getElementById('endBearingUlt')?.textContent) || 0,
+    uls: Number(document.getElementById('uls')?.value) || 0,
+    reductionFactor: Number(document.getElementById('reductionFactor')?.value) || 0,
+  };
+
+  const derivedSocketLengthDesign = socketLengthDesign(socketLengthDesignInputs);
+
+  setMultipleValues({...derivedSocketLengthDesign});
+
+}
+
 // Update soil table rows based on soilRowAmount
 function updateSoilTableRows() {
   const soilRowAmount = Number(document.getElementById('soilRowAmount').value);
@@ -254,7 +272,7 @@ document.getElementById('rockRowAmount').addEventListener('change', () => {
 document.addEventListener('DOMContentLoaded', async () => {
 
   updateSoilTableRows(); // Initial call to set correct rows on page load
-updateRockTableRows(); 
+ updateRockTableRows(); 
 
 
   inputIds.forEach(id => {
@@ -266,6 +284,8 @@ updateRockTableRows();
       await updateSoilTable();
       await updateRockTable();
       await updateEndBearingTable();
+      updateSocketLengthDesign();
+
     });
   });
 
@@ -273,5 +293,7 @@ updateRockTableRows();
   updateInitialTable();
   await updateSoilTable();
   await updateRockTable();
-  await updateEndBearingTable();});
+  await updateEndBearingTable();
+  updateSocketLengthDesign();
+});
 

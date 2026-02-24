@@ -161,7 +161,7 @@
         <td id = "strataThickness1"></td>
         <td id="soilRLfrom1" ></td>
         <td id="soilRLto1" ></td>
-        <td><input value = "UF-" type="text" id="soilType1" /></td>
+        <td><input aria-selected = "UF-" type="text" id="soilType1" /></td>
         <td><input type="number" id="ID1" value = "2"/></td>
         <td id="F1" ></td>
         <td id="phi1" ></td>
@@ -599,6 +599,41 @@
   </tbody>
 </table>
 <br><br>
+
+<!--------------------- SECTION 5 ----------------------->
+<h1>PILE SOCKET LENGTH DESIGN based on both ultimate end bearing AND ultimate shaft resistance</h1>
+<div id = socketLengthDesign>
+  <div class = "wrapper">
+    <div class= "name">Input pile socket length for compression ULS</div>
+    <div class = "equals">=</div>
+    <div class = "value"><span class = "ULS_value"></span></div>
+  </div>
+  <div class = "wrapper">
+    <div class= "name">Ultimate geotechnical strength (shaft resistance) R<sub>ug-s</sub>(kN) </div>
+    <div class = "equals">=</div>
+    <div class = "value"><span id = "Rugs"></span></div>
+  </div>
+  <div class = "wrapper">
+    <div class= "name">Ultimate geotechnical strength (base resistance) R<sub>ug-b</sub>(kN) </div>
+    <div class = "equals">=</div>
+    <div class = "value"><span class = "endBearingUlt_value"></span></div>
+  </div>
+  <div class = "wrapper">
+    <div class= "name">Ultimate geotechnical strength Rug (kN) </div>
+    <div class = "equals">=</div>
+    <div class = "value"><span id = "Rug"></span></div>
+  </div>
+  <div class = "wrapper">
+    <div class= "name">Geotechnical strength reduction factor ϕ<sub>g</sub></div>
+    <div class = "equals">=</div>
+    <div class = "value"><input id = "reductionFactor" type="number" step="0.01"></div>
+  </div>
+  <div class = "wrapper">
+    <div class= "name" style="font-weight: bold;">Design geotechnical strength in compression Rg* (kN) ϕ<sub>g</sub>R<sub>ug</sub></div>
+    <div class = "equals">=</div>
+    <div class = "value"><span id = "RgStar"></span></div>
+  </div>
+</div>
 
 <!-- SCRIPT -->
 <script>

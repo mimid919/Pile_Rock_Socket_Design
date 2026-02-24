@@ -509,3 +509,35 @@ export async function endBearingTable(inputs) {
     endBearingUlt
   };
 }
+
+//----------------------------------------- SOCKET LENGTH DESIGN SECTION  -----------------------------------------------
+export function socketLengthDesign(inputs) {
+  
+  const { soilTotal, rockAdhesionTotal, endBearingUlt, uls, reductionFactor} = inputs;
+
+  let results = {
+    Rugs: '',
+    Rug: '',
+    RgStar: ''
+  };
+
+  if (!inputs) {
+    return results;
+  }
+
+  //Rugs calculation
+  results.Rugs = round(rockAdhesionTotal * soilTotal);
+
+  //Rug calculation
+  results.Rug = round((endBearingUlt + results.Rugs));
+
+  //RgStar calculation
+  const numRgStar = round(reductionFactor * results.Rug);
+  if (numRgStar > uls){
+    results.RgStar = `${numRgStar} > ${uls} socket length is OK`;
+  }else {
+    results.RgStar = `${numRgStar} < ${uls} socket length is inadequate`;
+  }
+
+  return results;
+}

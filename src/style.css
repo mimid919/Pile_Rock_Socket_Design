@@ -58,3 +58,28 @@ table#inputTable {
 input[type="number"] {
   width: 100px; /* wider for better readability */
 }
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  width: 500px;
+  padding-bottom: 10px;
+}
+
+.name {
+  text-align: right;
+}
+
+.equals {
+  text-align: center;
+}
+
+.value {
+  text-align: left;
+}
+
+.value input {
+  width: 120px;        /* set consistent width */
+  box-sizing: border-box;
+}
