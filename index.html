@@ -604,6 +604,11 @@
 <h1>PILE SOCKET LENGTH DESIGN based on both ultimate end bearing AND ultimate shaft resistance</h1>
 <div id = socketLengthDesign>
   <div class = "wrapper">
+    <div class= "name">Geotechnical strength reduction factor ϕ<sub>g</sub></div>
+    <div class = "equals">=</div>
+    <div class = "value"><input id = "reductionFactor" type="number" step="0.01"></div>
+  </div>
+  <div class = "wrapper">
     <div class= "name">Input pile socket length for compression ULS</div>
     <div class = "equals">=</div>
     <div class = "value"><span class = "ULS_value"></span></div>
@@ -616,17 +621,12 @@
   <div class = "wrapper">
     <div class= "name">Ultimate geotechnical strength (base resistance) R<sub>ug-b</sub>(kN) </div>
     <div class = "equals">=</div>
-    <div class = "value"><span class = "endBearingUlt_value"></span></div>
+    <div class = "value"><span id = "Rugb"></span></div>
   </div>
   <div class = "wrapper">
     <div class= "name">Ultimate geotechnical strength Rug (kN) </div>
     <div class = "equals">=</div>
     <div class = "value"><span id = "Rug"></span></div>
-  </div>
-  <div class = "wrapper">
-    <div class= "name">Geotechnical strength reduction factor ϕ<sub>g</sub></div>
-    <div class = "equals">=</div>
-    <div class = "value"><input id = "reductionFactor" type="number" step="0.01"></div>
   </div>
   <div class = "wrapper">
     <div class= "name" style="font-weight: bold;">Design geotechnical strength in compression Rg* (kN) ϕ<sub>g</sub>R<sub>ug</sub></div>

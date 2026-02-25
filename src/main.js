@@ -56,6 +56,8 @@ const inputIds = [
   'rockClass8',
   'rockClass9',
   'rockClass10',
+  'endBearingUlt_value',
+  'reductionFactor',
 ];
 
 // Generic function to update _value spans for any input
@@ -220,6 +222,7 @@ function updateSocketLengthDesign() {
   const derivedSocketLengthDesign = socketLengthDesign(socketLengthDesignInputs);
 
   setMultipleValues({...derivedSocketLengthDesign});
+  console.log("inputed everything in the main");
 
 }
 

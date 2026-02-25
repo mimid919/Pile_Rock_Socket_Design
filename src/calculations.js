@@ -515,18 +515,30 @@ export function socketLengthDesign(inputs) {
   
   const { soilTotal, rockAdhesionTotal, endBearingUlt, uls, reductionFactor} = inputs;
 
+  console.log("entered socketLengthDesign in calculations.js");
   let results = {
     Rugs: '',
+    Rugb: '',
     Rug: '',
     RgStar: ''
   };
+  console.log(soilTotal);
+  console.log(rockAdhesionTotal);
+  console.log(endBearingUlt);
+  console.log(uls);
+  console.log(reductionFactor);
 
-  if (!inputs) {
+  if (!soilTotal || !rockAdhesionTotal || !endBearingUlt || !uls || !reductionFactor) {
     return results;
   }
 
+  console.log("all inputs filled");
+
   //Rugs calculation
-  results.Rugs = round(rockAdhesionTotal * soilTotal);
+  results.Rugs = round(rockAdhesionTotal + soilTotal);
+
+  //Rugb calculation
+  results.Rugb = round(endBearingUlt);
 
   //Rug calculation
   results.Rug = round((endBearingUlt + results.Rugs));
@@ -534,9 +546,9 @@ export function socketLengthDesign(inputs) {
   //RgStar calculation
   const numRgStar = round(reductionFactor * results.Rug);
   if (numRgStar > uls){
-    results.RgStar = `${numRgStar} > ${uls} socket length is OK`;
+    results.RgStar = `${numRgStar} > ${uls} &nbsp;&nbsp;&nbsp; socket length is OK`;
   }else {
-    results.RgStar = `${numRgStar} < ${uls} socket length is inadequate`;
+    results.RgStar = `${numRgStar} < ${uls} &nbsp;&nbsp;&nbsp; socket length is inadequate`;
   }
 
   return results;
