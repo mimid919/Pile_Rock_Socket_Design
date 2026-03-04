@@ -600,9 +600,9 @@
 </table>
 <br><br>
 
-<!--------------------- SECTION 5 ----------------------->
+<!--------------------- SECTION socket length design ----------------------->
 <h1>PILE SOCKET LENGTH DESIGN based on both ultimate end bearing AND ultimate shaft resistance</h1>
-<div id = socketLengthDesign>
+<div id = "socketLengthDesign">
   <div class = "wrapper">
     <div class= "name">Geotechnical strength reduction factor ϕ<sub>g</sub></div>
     <div class = "equals">=</div>
@@ -634,6 +634,31 @@
     <div class = "value" id = "RgStar"></div>
   </div>
 </div>
+<br><br>
+
+<!--------------------- SECTION settlement calculation ----------------------->
+<h1>Settlement calculation of pile under serviceability load (SLS), Rowe & Armitage method</h1>
+<br>
+<div id = "settlementCalculation">
+  <b>Step 1: Calculation of L<sub>max</sub></b><br>
+  <div class = "wrapper">
+    <div class= "name">Length of pile required if all the load were taken in side shear L<sub>max</sub> </div>
+    <div class = "equals">=</div>
+    <div class = "value"><span class = "Lmax_value"></span></div>
+  </div>
+  <div class = "wrapper">
+    <div class = "name">Ultimate geotechnical strength (shaft resistance) Rug-s (kN) </div>
+    <div class = "equals">=</div>
+    <div class = "value" style="font-weight: bold;" id = "LmaxRequirements"></div>
+  </div>
+  <div class = "wrapper">
+    <div class = "name">L<sub>max</sub> / D</div>
+    <div class = "equals">=</div>
+    <div class = "value" style="font-weight: bold;" id = "LmaxOverD"></div>
+  </div>
+</div>
+
+
 
 <!-- SCRIPT -->
 <script>

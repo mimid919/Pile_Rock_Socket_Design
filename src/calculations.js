@@ -1,6 +1,6 @@
 import  { lookup }from'./Parameters.js';
 
-//--------------------------------- FUNCTIONS -----------------------------------
+//--------------------------------- CALCULATION FUNCTIONS -----------------------------------
 function areInputsFilled(values) {
   return Object.values(values).every(val => val !== null && val !== undefined && val !== '');
 }
@@ -117,7 +117,7 @@ function calculateRequiredRockSocketLength(rockStrataThickness, rockRLfrom, rock
   }
 }
 
-
+//--------------------------------- CALCULATION FUNCTIONS ~ END -----------------------------------
 
 
 //----------------------------------------- INITIAL TABLE -----------------------------------------------
@@ -515,7 +515,6 @@ export function socketLengthDesign(inputs) {
   
   const { soilTotal, rockAdhesionTotal, endBearingUlt, uls, reductionFactor} = inputs;
 
-  console.log("entered socketLengthDesign in calculations.js");
   let results = {
     Rugs: '',
     Rugb: '',
@@ -546,12 +545,44 @@ export function socketLengthDesign(inputs) {
   //RgStar calculation
   const numRgStar = round(reductionFactor * results.Rug);
   if (numRgStar > uls){
-    results.RgStar = `${numRgStar} > ${uls}    socket length is OK`;
+    results.RgStar = `${numRgStar} > ${uls} ----->   socket length is OK`;
   }else {
-    results.RgStar = `${numRgStar} < ${uls}   socket length is inadequate`;
+    results.RgStar = `${numRgStar} < ${uls}  ----->   socket length is inadequate`;
   }
 
   document.getElementById("RgStar").innerHTML = results.RgStar;
 
   return results;
+}
+
+//----------------------------------------- SETTLEMENT CALCULATION SECTION  -----------------------------------------------
+export function settlementCalculation(inputs) {
+  const {rockAdhesionSettlementTotal, uls, Lmax, pile_diameter } = inputs;
+
+  const requiredInputsFilled = uls && Lmax && pile_diameter;
+
+  if (!requiredInputsFilled) {
+    return {
+      rockAdhesionSettlementTotal: '',
+      settlement: ''
+    };
+  }
+  const results = {
+    LmaxRequirements,
+    LmaxOverD,
+
+  };
+  
+  if (rockAdhesionSettlementTotal > uls) {
+    results.LmaxRequirements = `${rockAdhesionSettlementTotal} > ${uls} -----> 
+      L<sub>max</sub> meets the requirements`;
+  }else{
+    results.LmaxRequirements = `${rockAdhesionSettlementTotal} < ${uls} -----> 
+      L<sub>max</sub> does NOT meet the requirements`;
+  }
+
+  LmaxRequirements.innerHTML = results.LmaxRequirements;
+  results.LmaxOverD = round(Lmax / (pile_diameter / 1000));
+  
+  return results
 }

@@ -1,4 +1,5 @@
-import { initialInputsTable, soilTable, rockTable, endBearingTable, socketLengthDesign } from './calculations.js';
+import { initialInputsTable, soilTable, rockTable, endBearingTable, 
+        socketLengthDesign, settlementCalculation } from './calculations.js';
 import { setMultipleValues } from './tableHandler.js';
 
 // All inputs you want to update to using "_value" and add event listeners
@@ -225,6 +226,24 @@ function updateSocketLengthDesign() {
   console.log("inputed everything in the main");
 
 }
+//---------------------------- SETTLEMENT CALCULATION SECTION ---------------------------
+function updateSettlementCalculation() {
+  inputIds.forEach(updateValueSpans);
+
+  const settlementCalculationInputs = {
+    rockAdhesionSettlementTotal : Number(document.getElementById('rockAdhesionSettlementTotal')?.textContent) || 0,
+    uls: Number(document.getElementById('uls')?.value) || 0,
+    Lmax: Number(document.getElementById('Lmax')?.value) || 0,
+    pile_diameter: Number(document.getElementById('pile_diameter')?.value) || 0,
+  };
+
+  const derivedSettlementCalculation = settlementCalculation(settlementCalculationInputs);
+  setMultipleValues({...derivedSettlementCalculation});
+
+}
+
+
+
 
 // Update soil table rows based on soilRowAmount
 function updateSoilTableRows() {
@@ -288,7 +307,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       await updateRockTable();
       await updateEndBearingTable();
       updateSocketLengthDesign();
-
+      updateSettlementCalculation();
     });
   });
 
@@ -298,5 +317,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   await updateRockTable();
   await updateEndBearingTable();
   updateSocketLengthDesign();
+  updateSettlementCalculation();
 });
 
