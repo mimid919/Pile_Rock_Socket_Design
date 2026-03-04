@@ -58,18 +58,17 @@ table#inputTable {
 input[type="number"] {
   width: 100px; /* wider for better readability */
 }
-
 .wrapper {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
   gap: 8px;
-    width: 500px;
+  width: 1000px;
   padding-bottom: 10px;
 }
 
 .name {
   text-align: right;
-    width: 500px;
 }
 
 .equals {
@@ -79,7 +78,6 @@ input[type="number"] {
 .value {
   text-align: left;
 }
-
 .value input {
   width: 120px;        /* set consistent width */
   box-sizing: border-box;

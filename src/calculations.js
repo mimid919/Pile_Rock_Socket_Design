@@ -546,10 +546,12 @@ export function socketLengthDesign(inputs) {
   //RgStar calculation
   const numRgStar = round(reductionFactor * results.Rug);
   if (numRgStar > uls){
-    results.RgStar = `${numRgStar} > ${uls} &nbsp;&nbsp;&nbsp; socket length is OK`;
+    results.RgStar = `${numRgStar} > ${uls}    socket length is OK`;
   }else {
-    results.RgStar = `${numRgStar} < ${uls} &nbsp;&nbsp;&nbsp; socket length is inadequate`;
+    results.RgStar = `${numRgStar} < ${uls}   socket length is inadequate`;
   }
+
+  document.getElementById("RgStar").innerHTML = results.RgStar;
 
   return results;
 }
