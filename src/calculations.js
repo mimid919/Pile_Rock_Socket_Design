@@ -557,32 +557,33 @@ export function socketLengthDesign(inputs) {
 
 //----------------------------------------- SETTLEMENT CALCULATION SECTION  -----------------------------------------------
 export function settlementCalculation(inputs) {
+  //Inputs for caculating (loaded in through main.js )
   const {rockAdhesionSettlementTotal, uls, Lmax, pile_diameter } = inputs;
 
+  // Require inputs
   const requiredInputsFilled = uls && Lmax && pile_diameter;
 
-  if (!requiredInputsFilled) {
-    return {
-      rockAdhesionSettlementTotal: '',
-      settlement: ''
-    };
-  }
+  // Outputs
   const results = {
-    LmaxRequirements,
-    LmaxOverD,
-
+    LmaxRequirements: '',
+    LmaxOverD: ''
   };
+
+  // Return empty if required inputs missing
+  if (!requiredInputsFilled) {
+    return;
+  }
   
   if (rockAdhesionSettlementTotal > uls) {
     results.LmaxRequirements = `${rockAdhesionSettlementTotal} > ${uls} -----> 
       L<sub>max</sub> meets the requirements`;
   }else{
     results.LmaxRequirements = `${rockAdhesionSettlementTotal} < ${uls} -----> 
-      L<sub>max</sub> does NOT meet the requirements`;
+      L does NOT meet the requirements`;
   }
 
   LmaxRequirements.innerHTML = results.LmaxRequirements;
   results.LmaxOverD = round(Lmax / (pile_diameter / 1000));
   
-  return results
+  return results;
 }
